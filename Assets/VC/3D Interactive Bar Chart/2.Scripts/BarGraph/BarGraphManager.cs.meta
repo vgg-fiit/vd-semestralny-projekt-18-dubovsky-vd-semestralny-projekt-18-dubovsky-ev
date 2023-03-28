@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 8208f14e2e2f579429214bdc68f5e64e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - XAxis: {instanceID: 0}
+  - YAxis: {instanceID: 0}
+  - ZAxis: {instanceID: 0}
+  - XPoint: {instanceID: 0}
+  - YPoint: {instanceID: 0}
+  - ZPoint: {instanceID: 0}
+  - XYPlane: {instanceID: 0}
+  - XZPlane: {instanceID: 0}
+  - YZPlane: {instanceID: 0}
+  - barParent: {instanceID: 0}
+  - horizontalGroup: {instanceID: 0}
+  - sphere: {fileID: 3987995355903253111, guid: 4faf175c0b16a5c4faddffa43c74a559, type: 3}
+  executionOrder: 300
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
