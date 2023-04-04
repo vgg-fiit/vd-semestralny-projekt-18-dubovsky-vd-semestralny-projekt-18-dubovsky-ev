@@ -309,8 +309,8 @@ namespace BarGraph.VittorCloud
         {
             for (int i = 0; i < ListOfDataSet.Count; i++)
             {
-                Debug.Log(ListOfDataSet.Count);
-                Debug.Log(ListOfDataSet[i].ListOfBars.Count);
+                //Debug.Log(ListOfDataSet.Count);
+                //Debug.Log(ListOfDataSet[i].ListOfBars.Count);
                 for (int j = 0; j < ListOfDataSet[i].ListOfBars.Count; j++)
                 {
                     Graph.AssignAxisName(j, i, ListOfDataSet[i].ListOfBars[j].XValue, ListOfDataSet[i].GroupName);

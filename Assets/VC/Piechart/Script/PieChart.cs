@@ -6,6 +6,11 @@ namespace PieChart.ViitorCloud
 {
     public class PieChart : MonoBehaviour
     {
+        private PieChartGenderDataLoadController genderDataScript;
+        private PieChartAgeDataLoadController ageDataScript;
+        private PieChartNavTypeDataLoadController navTypeDataScript;
+        private PieChartLicenceDataLoadController licenceDataScript;
+
         [Tooltip("Object of PieChartMeshController")]
         public PieChartMeshController pieChartMeshController;
 
@@ -21,7 +26,7 @@ namespace PieChart.ViitorCloud
 
         [Tooltip("The colors that will be applied on the pie\n" +
                  "The size of this list must exact the value of Segment.")]
-        public Color[] customColors;
+        public List<Color> customColors = new List<Color>();
 
         [SerializeField]
         [Tooltip("Pie chart with not information and title")]
@@ -38,6 +43,47 @@ namespace PieChart.ViitorCloud
 
         void Start()
         {
+            if (this.GetComponent<PieChartGenderDataLoadController>() != null)
+            {
+                genderDataScript = this.GetComponent<PieChartGenderDataLoadController>();
+
+                Data = genderDataScript.Data;
+                dataDescription = genderDataScript.dataDescription;
+                customColors = genderDataScript.customColors;
+                segments = genderDataScript.segment;
+            }
+
+            if (this.GetComponent<PieChartAgeDataLoadController>() != null)
+            {
+                ageDataScript = this.GetComponent<PieChartAgeDataLoadController>();
+
+                Data = ageDataScript.Data;
+                dataDescription = ageDataScript.dataDescription;
+                customColors = ageDataScript.customColors;
+                segments = ageDataScript.segment;
+            }
+
+            if (this.GetComponent<PieChartNavTypeDataLoadController>() != null)
+            {
+                navTypeDataScript = this.GetComponent<PieChartNavTypeDataLoadController>();
+
+                Data = navTypeDataScript.Data;
+                dataDescription = navTypeDataScript.dataDescription;
+                customColors = navTypeDataScript.customColors;
+                segments = navTypeDataScript.segment;
+            }
+
+            if (this.GetComponent<PieChartLicenceDataLoadController>() != null)
+            {
+                licenceDataScript = this.GetComponent<PieChartLicenceDataLoadController>();
+
+                Data = licenceDataScript.Data;
+                dataDescription = licenceDataScript.dataDescription;
+                customColors = licenceDataScript.customColors;
+                segments = licenceDataScript.segment;
+            }
+
+
             if (pieChartMeshController == null)
                 pieChartMeshController = gameObject.AddComponent<PieChartMeshController>();
             pieChartMeshController.parent = parentTransform.gameObject;
@@ -52,19 +98,8 @@ namespace PieChart.ViitorCloud
             if (mainMaterial != null)
                 pieChartMeshController.SetMatrialOfPie(mainMaterial);
 
-            Data.Add(90.4f);
-            dataDescription.Add("HDA");
-
-            Data.Add(90.4f);
-            dataDescription.Add("HDA1");
-            Data.Add(90.4f);
-            dataDescription.Add("HDA2");
-            Data.Add(90.4f);
-            dataDescription.Add("HDA3");
-
-
             pieChartMeshController.SetData(Data.ToArray());
-            pieChartMeshController.SetColor(customColors);
+            pieChartMeshController.SetColor(customColors.ToArray());
             pieChartMeshController.SetDescription(dataDescription.ToArray());
             pieChartMeshController.GenerateChart(segments ,animationType, justCreateThePie);
 
