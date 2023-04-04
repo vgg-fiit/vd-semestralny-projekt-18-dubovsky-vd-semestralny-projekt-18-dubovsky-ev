@@ -14,7 +14,7 @@ namespace PieChart.ViitorCloud
 
         [Tooltip("The data for the pie\n" +
                  "The size of this list must exact the value of Segment.")]
-        public float[] Data;
+        public List<float> Data = new List<float>();
 
         [Tooltip("Main Material that the mesh of the pie will use to rander")]
         public Material mainMaterial;
@@ -52,7 +52,18 @@ namespace PieChart.ViitorCloud
             if (mainMaterial != null)
                 pieChartMeshController.SetMatrialOfPie(mainMaterial);
 
-            pieChartMeshController.SetData(Data);
+            Data.Add(90.4f);
+            dataDescription.Add("HDA");
+
+            Data.Add(90.4f);
+            dataDescription.Add("HDA1");
+            Data.Add(90.4f);
+            dataDescription.Add("HDA2");
+            Data.Add(90.4f);
+            dataDescription.Add("HDA3");
+
+
+            pieChartMeshController.SetData(Data.ToArray());
             pieChartMeshController.SetColor(customColors);
             pieChartMeshController.SetDescription(dataDescription.ToArray());
             pieChartMeshController.GenerateChart(segments ,animationType, justCreateThePie);
