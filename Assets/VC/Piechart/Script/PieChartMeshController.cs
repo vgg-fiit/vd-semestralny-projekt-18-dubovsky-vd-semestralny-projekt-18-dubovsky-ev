@@ -109,7 +109,7 @@ namespace PieChart.ViitorCloud
             if (mPieChart != null)
             {
                 mPieChart.Init(Data.ToArray(), mainMaterial, delay, Meshes, animationType);
-                mPieChart.Draw(Data.ToArray());
+                mPieChart.Draw(Data.ToArray(), dataDescription.ToArray());
             }
             else
             {

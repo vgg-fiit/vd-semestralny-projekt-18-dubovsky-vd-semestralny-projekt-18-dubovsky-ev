@@ -20,7 +20,7 @@ public class BarGraphExample : MonoBehaviour
         {
 
             Debug.LogError("ExampleDataSet is Empty!");
-            return;
+            //return;
         }
         barGraphGenerator.GeneratBarGraph(exampleDataSet);
 
