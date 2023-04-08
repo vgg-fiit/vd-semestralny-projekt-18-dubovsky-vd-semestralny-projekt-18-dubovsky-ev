@@ -9,6 +9,7 @@ namespace PieChart.ViitorCloud
     {
 
         float[] mData;
+        string[] mDataDescription;
 
         int mSlices;
         float mRotationAngle;
@@ -50,7 +51,9 @@ namespace PieChart.ViitorCloud
                 Array.Sort(mData);
             }
             else
+            {
                 mData = data;
+            }
             TempObject = otherobject;
             mSlices = 100;
             mRotationAngle = -90;
@@ -70,9 +73,10 @@ namespace PieChart.ViitorCloud
             mData = data;
         }
 
-        public void Draw(float[] data)
+        public void Draw(float[] data, string[] dataDescription)
         {
             mData = data;
+            mDataDescription = dataDescription;
             StopAllCoroutines();
             StartCoroutine(Draw());
         }
@@ -357,7 +361,8 @@ namespace PieChart.ViitorCloud
                     continue;
                 }
                 var Final = subTris.Concat(subTris3D).Concat(subTrisLeft).Concat(subTrisRight).Concat(sidetrinaglesFinal);
-                CreateObjectAndSetMesh(FinalVerticesArray, Final.ToArray(), "Parts" + count, count);
+                //CreateObjectAndSetMesh(FinalVerticesArray, Final.ToArray(), "Parts" + count, count);
+                CreateObjectAndSetMesh(FinalVerticesArray, Final.ToArray(), mDataDescription[count], count);
 
                 yield return new WaitUntil(() => partcreated);
             }

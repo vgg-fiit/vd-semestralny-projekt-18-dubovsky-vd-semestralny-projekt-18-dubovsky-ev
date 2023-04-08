@@ -30,31 +30,51 @@ using static _Scripts.DataLoader.ParticipantDataset;
 public class BarGraphDataLoadController : MonoBehaviour
 {
     private List<XYBarValues> ListOfBars;
-    private List<BarGraphDataSet> exampleDataSet;
+    private List<BarGraphDataSet> newExampleDataSet = new List<BarGraphDataSet>();
     BarGraphGenerator barGraphGenerator;
+    private int time_interval = 30; // seconds
+
+    private ParticipantDataset participantDataset =
+        new ParticipantDataset("/home/awesome/STU/VD/VD_dataset/dataset/transformed");
 
     void Awake()
     {
+        Debug.Log("Awake");
+        barGraphGenerator = this.GetComponent<BarGraphGenerator>();
+        Press();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown("space"))
+        {
+            Press();
+        }
+    }
+
+    public void Press()
+    {
         Debug.Log("Dataset creation started");
+        
+        this.transform.GetComponent<BarGraphExample>().exampleDataSet.Clear();
 
-        var pd = new ParticipantDataset("/home/awesome/STU/VD/VD_dataset/dataset/transformed");
-        int participant_cnt = pd.ParticipantIDS.KeyCount;
-        int max_time = 25;
+        int participant_cnt = this.participantDataset.ParticipantIDS.KeyCount;
+        int max_time = 14;
 
-        int capacity = participant_cnt * max_time; // todo change 
+        int capacity = participant_cnt * max_time;
         this.transform.GetComponent<BarGraphExample>().exampleDataSet.Capacity = capacity;
+
+        Debug.Log("Participant cnt");
+        Debug.Log(participant_cnt);
 
         foreach (var i in Enumerable.Range(0, participant_cnt))
         {
             this.transform.GetComponent<BarGraphExample>().exampleDataSet.Add(new BarGraphDataSet());
-            this.transform.GetComponent<BarGraphExample>().exampleDataSet[i].ListOfBars = new List<XYBarValues>();
             this.transform.GetComponent<BarGraphExample>().exampleDataSet[i].GroupName = "Participant" + i.ToString();
+            this.transform.GetComponent<BarGraphExample>().exampleDataSet[i].ListOfBars = new List<XYBarValues>();
 
 
-            var aoihits = pd.GetAOIHit(i);
-
-            // Debug.Log("aoihits.Count()");
-            // Debug.Log(aoihits.RowCount);
+            var aoihits = this.participantDataset.GetAOIHit(i);
 
 
             foreach (var j in Enumerable.Range(0, aoihits.RowCount))
@@ -63,7 +83,7 @@ public class BarGraphDataLoadController : MonoBehaviour
                 var row_obs = row.Observations;
                 var a = row.Values;
 
-                var time = 10.0 * j;
+                var time = time_interval * j;
 
                 var xy = new XYBarValues
                 {
@@ -73,73 +93,33 @@ public class BarGraphDataLoadController : MonoBehaviour
 
                 this.transform.GetComponent<BarGraphExample>().exampleDataSet[i].ListOfBars.Add(xy);
             }
+            
+
+            var last_j = 0;
 
             if (aoihits.RowCount < max_time)
             {
-                foreach (var j in Enumerable.Range(max_time, aoihits.RowCount))
+
+                foreach (var k in Enumerable.Range(aoihits.RowCount, max_time - aoihits.RowCount))
                 {
-                    var time = 10.0 * j;
+                    var time = time_interval * k;
 
                     var xy = new XYBarValues
                     {
                         XValue = time.ToString(),
-                        YValue = 0,
+                        YValue = 1,
                     };
 
                     this.transform.GetComponent<BarGraphExample>().exampleDataSet[i].ListOfBars.Add(xy);
+                    last_j = k;
                 }
             }
+
+            Debug.Log("Last J");
+            Debug.Log(last_j);
         }
 
-        // var xy1 = new XYBarValues
-        // {
-        //     XValue = "3",
-        //     YValue = 44,
-        // };
-        //
-        // var xy2 = new XYBarValues
-        // {
-        //     XValue = "3",
-        //     YValue = 60,
-        // };
-        //
-        // var xy3 = new XYBarValues
-        // {
-        //     XValue = "31",
-        //     YValue = 20,
-        // };
-        //
-        // //this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].ListOfBars.Add(xy1);
-        // //this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].ListOfBars.Add(xy2);
-        // //this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].ListOfBars.Add(xy3);
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet.Capacity = 4;
-        //
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet.Add(new BarGraphDataSet());
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet.Add(new BarGraphDataSet());
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet.Add(new BarGraphDataSet());
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet.Add(new BarGraphDataSet());
-        //
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].ListOfBars = new List<XYBarValues>();
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[1].ListOfBars = new List<XYBarValues>();
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[2].ListOfBars = new List<XYBarValues>();
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[3].ListOfBars = new List<XYBarValues>();
-        // //bud tento sposob
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].ListOfBars.Add(new XYBarValues
-        // {
-        //     XValue = "31",
-        //     YValue = 3,
-        // });
-        // // alebo si to mozes vytvorit nanovo - v podstate to iste
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].ListOfBars.Add(xy2);
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].ListOfBars.Add(xy3);
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[1].ListOfBars.Add(xy3);
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[1].ListOfBars.Add(xy2);
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[1].ListOfBars.Add(xy3);
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[2].ListOfBars.Add(xy3);
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[2].ListOfBars.Add(xy3);
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[2].ListOfBars.Add(xy1);
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[3].ListOfBars.Add(xy3);
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[3].ListOfBars.Add(xy2);
-        // this.transform.GetComponent<BarGraphExample>().exampleDataSet[3].ListOfBars.Add(xy2);
+
+        barGraphGenerator.GeneratBarGraph(this.transform.GetComponent<BarGraphExample>().exampleDataSet);
     }
 }

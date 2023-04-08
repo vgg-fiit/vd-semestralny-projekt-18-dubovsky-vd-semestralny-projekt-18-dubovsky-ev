@@ -36,7 +36,8 @@ namespace PieChart.ViitorCloud
                     if (hit.collider.gameObject.CompareTag("Part"))
                     {
                         Debug.Log(hit.collider.transform.tag);
-                    
+                        Debug.Log(hit.collider.transform.name);
+                        StaticFiltrationController.ChangeFiltration(hit.collider.transform.name);
                         if (targetedObject != hit.collider.gameObject)
                             hit.collider.gameObject.GetComponent<PartProperties>().MyCurrntPosition = hit.collider.transform.position;
                     
