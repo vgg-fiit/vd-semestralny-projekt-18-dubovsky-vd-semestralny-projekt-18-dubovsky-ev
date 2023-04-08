@@ -34,8 +34,7 @@ public class BarGraphDataLoadController : MonoBehaviour
     BarGraphGenerator barGraphGenerator;
     private int time_interval = 30; // seconds
 
-    private ParticipantDataset participantDataset =
-        new ParticipantDataset("/home/awesome/STU/VD/VD_dataset/dataset/transformed");
+    private ParticipantDataset participantDataset = new ParticipantDataset();
 
     void Awake()
     {
@@ -55,7 +54,7 @@ public class BarGraphDataLoadController : MonoBehaviour
     public void Press()
     {
         Debug.Log("Dataset creation started");
-        
+
         this.transform.GetComponent<BarGraphExample>().exampleDataSet.Clear();
 
         int participant_cnt = this.participantDataset.ParticipantIDS.KeyCount;
@@ -93,13 +92,12 @@ public class BarGraphDataLoadController : MonoBehaviour
 
                 this.transform.GetComponent<BarGraphExample>().exampleDataSet[i].ListOfBars.Add(xy);
             }
-            
+
 
             var last_j = 0;
 
             if (aoihits.RowCount < max_time)
             {
-
                 foreach (var k in Enumerable.Range(aoihits.RowCount, max_time - aoihits.RowCount))
                 {
                     var time = time_interval * k;

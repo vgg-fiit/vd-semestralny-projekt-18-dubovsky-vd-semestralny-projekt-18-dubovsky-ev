@@ -32,8 +32,6 @@ public class ScatterPlotDataLoadController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        //"startTimestamp", "ParticipantID", "eyeTrackingStartTime", "gameStartTime", "route", "routeSteps", "navigationType", "gender", "age", "drivingLicense",  
-
         var participant_first = new ParticipantData
         {
             startTimestamp = Time.time,
@@ -48,22 +46,15 @@ public class ScatterPlotDataLoadController : MonoBehaviour
             drivingLicense = true,
         };
 
-        string json = JsonUtility.ToJson(participant_first);
-
-
-
+        // string json = JsonUtility.ToJson(participant_first);
         //myObject = JsonUtility.FromJson<MyClass>(json);
-
-
         //var options = new JsonSerializerOptions { WriteIndented = true };
         //string jsonString = JsonSerializer.Serialize(participant_first, options);
-
         //Debug.Log(json);
         //Debug.Log(participant_first);
         //Debug.Log(participant_first.age);
-
-
         //this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].GroupName = "fero";
+
         var xy1 = new XYBarValues
         {
             XValue = "3",

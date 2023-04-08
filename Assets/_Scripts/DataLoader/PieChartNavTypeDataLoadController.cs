@@ -12,8 +12,7 @@ public class PieChartNavTypeDataLoadController : MonoBehaviour
     [HideInInspector] public List<Color> customColors = new List<Color>();
     [HideInInspector] public int segment;
 
-    public ParticipantDataset participantDataset =
-        new ParticipantDataset("/home/awesome/STU/VD/VD_dataset/dataset/transformed");
+    public ParticipantDataset participantDataset = new ParticipantDataset();
 
 
     // Start is called before the first frame update

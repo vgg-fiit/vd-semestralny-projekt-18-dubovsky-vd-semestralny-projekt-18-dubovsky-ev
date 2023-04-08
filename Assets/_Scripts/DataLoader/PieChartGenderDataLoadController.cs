@@ -14,7 +14,7 @@ public class PieChartGenderDataLoadController : MonoBehaviour
     [HideInInspector] public int segment;
 
     public ParticipantDataset participantDataset =
-        new ParticipantDataset("/home/awesome/STU/VD/VD_dataset/dataset/transformed");
+        new ParticipantDataset();
 
 
     // Start is called before the first frame update

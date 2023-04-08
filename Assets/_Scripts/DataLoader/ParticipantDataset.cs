@@ -18,7 +18,7 @@ namespace _Scripts.DataLoader
         private string _dirPath;
 
 
-        public ParticipantDataset(string dirPath)
+        public ParticipantDataset(string dirPath = "./Assets/Data")
         {
             this._dirPath = dirPath;
             string metaPath = Path.Combine(this._dirPath, "meta.csv");
