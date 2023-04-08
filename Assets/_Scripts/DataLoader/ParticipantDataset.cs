@@ -14,6 +14,7 @@ namespace _Scripts.DataLoader
         public Frame<int, string> MetaDF;
         public Series<int, double> ParticipantIDS;
 
+
         private string _dirPath;
 
 
@@ -80,6 +81,17 @@ namespace _Scripts.DataLoader
             // Debug.Log(this.df.ColumnKeys);
             var groupedByTags = this._MetaDF["drivingLicense"]
                 .GroupBy((kvp => (int)(kvp.Value)))
+                .Select(kvp => kvp.Value.KeyCount);
+            // KeyValuePair<string, OptionalValue<int>>
+            var dlDict = groupedByTags.Observations;
+            return dlDict;
+        }
+
+        public IEnumerable<KeyValuePair<double, int>> GetNavigationType()
+        {
+            // Debug.Log(this.df.ColumnKeys);
+            var groupedByTags = this._MetaDF["navigationType"]
+                .GroupBy((kvp => (kvp.Value)))
                 .Select(kvp => kvp.Value.KeyCount);
             // KeyValuePair<string, OptionalValue<int>>
             var dlDict = groupedByTags.Observations;

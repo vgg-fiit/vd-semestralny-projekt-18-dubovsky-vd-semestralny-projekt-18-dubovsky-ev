@@ -1,40 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
+using _Scripts.DataLoader;
 using UnityEngine;
 using PieChart.ViitorCloud;
+using static _Scripts.DataLoader.ParticipantDataset;
 
 public class PieChartNavTypeDataLoadController : MonoBehaviour
 {
-    [HideInInspector]
-    public List<float> Data = new List<float>();
-    [HideInInspector]
-    public List<string> dataDescription = new List<string>();
-    [HideInInspector]
-    public List<Color> customColors = new List<Color>();
-    [HideInInspector]
-    public int segment;
+    [HideInInspector] public List<float> Data = new List<float>();
+    [HideInInspector] public List<string> dataDescription = new List<string>();
+    [HideInInspector] public List<Color> customColors = new List<Color>();
+    [HideInInspector] public int segment;
+
+    public ParticipantDataset participantDataset =
+        new ParticipantDataset("/home/awesome/STU/VD/VD_dataset/dataset/transformed");
 
 
     // Start is called before the first frame update
     void Awake()
     {
-        //data
-        Data.Add(50.0f);
-        dataDescription.Add("Colorful");
-        Data.Add(50.0f);
-        dataDescription.Add("Arrows");
+        foreach (var keyValuePair in participantDataset.GetNavigationType())
+        {
+            Data.Add(keyValuePair.Value);
+            if (keyValuePair.Key == 0)
+            {
+                customColors.Add(Color.yellow);
+                dataDescription.Add("Rectangles");
+            }
+            else
+            {
+                customColors.Add(Color.green);
+                dataDescription.Add("Arrows");
+            }
+        }
 
-        //Color
-        customColors.Add(Color.yellow);
-        customColors.Add(Color.green);
-
-        //pocet kolko segmentob
         segment = Data.Count;
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
 }
