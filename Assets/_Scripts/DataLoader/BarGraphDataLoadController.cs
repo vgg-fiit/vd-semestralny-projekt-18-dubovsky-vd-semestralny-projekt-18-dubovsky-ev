@@ -94,8 +94,6 @@ public class BarGraphDataLoadController : MonoBehaviour
             }
 
 
-            var last_j = 0;
-
             if (aoihits.RowCount < max_time)
             {
                 foreach (var k in Enumerable.Range(aoihits.RowCount, max_time - aoihits.RowCount))
@@ -105,19 +103,15 @@ public class BarGraphDataLoadController : MonoBehaviour
                     var xy = new XYBarValues
                     {
                         XValue = time.ToString(),
-                        YValue = 1,
+                        YValue = 0,
                     };
 
                     this.transform.GetComponent<BarGraphExample>().exampleDataSet[i].ListOfBars.Add(xy);
-                    last_j = k;
                 }
             }
-
-            Debug.Log("Last J");
-            Debug.Log(last_j);
         }
 
-
-        barGraphGenerator.GeneratBarGraph(this.transform.GetComponent<BarGraphExample>().exampleDataSet);
+        // the duplicit
+        // barGraphGenerator.GeneratBarGraph(this.transform.GetComponent<BarGraphExample>().exampleDataSet);
     }
 }

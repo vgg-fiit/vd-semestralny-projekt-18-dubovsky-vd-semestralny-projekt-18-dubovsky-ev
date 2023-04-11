@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using Deedle;
 using Deedle.Internal;
@@ -101,24 +103,39 @@ namespace _Scripts.DataLoader
         public IEnumerable<KeyValuePair<string, string>> GetParticipantDetail(int participant_id)
         {
             string[] detailSelection = { "avgSpeed", "fixationCnt", "saccadeCnt" };
-            var row = this._MetaDF.GetRowAt<string>(participant_id + 1);
+            var row = this._MetaDF.GetRowAt<string>(participant_id);
             var selectedRow = row[detailSelection];
             return selectedRow.Observations;
         }
 
-        public void GetAOIMatrix()
-        {
-            // TODO aggregate by 30 seconds from gameStart   
-        }
-
-        public IEnumerable<KeyValuePair<string, string>> GetParticipantDuration(int participant_id)
+        public float GetParticipantDuration(int participant_id)
         {
             // returns 
             // id, gameDuration, drivingLicence
             string[] attributeSelection = { "duration", "drivingLicense" };
-            var row = this._MetaDF.GetRowAt<string>(participant_id + 1);
-            var selectedRow = row[attributeSelection];
-            return selectedRow.Observations;
+            var row = this._MetaDF.GetRowAt<string>(participant_id);
+            var selectedRow = row["duration"];
+            return float.Parse(selectedRow);
+        }
+
+        public Dictionary<string, List<int>> GetParticipantsByAge()
+        {
+            var age_col = this._MetaDF.Columns["age"];
+            var min_age = (int)age_col.Min();
+            var max_age = (int)age_col.Max();
+
+            var dict = new Dictionary<string, List<int>>();
+
+            foreach (var age in Enumerable.Range(min_age, max_age - min_age + 1))
+            {
+                var participants = (from kvp in age_col
+                    where kvp.Value.ToString() == age.ToString()
+                    select kvp.Key);
+
+                dict.Add(age.ToString(), participants.Values.ToList());
+            }
+
+            return dict;
         }
 
         // public IEnumerable<int> ParticipantSpeed(int participant_id)
@@ -133,33 +150,6 @@ namespace _Scripts.DataLoader
 
             var aoiHitDF = Frame.ReadCsv(aoiPath);
             return aoiHitDF;
-        }
-    }
-
-
-    public class MyCubeScript : MonoBehaviour
-    {
-        // Start is called before the first frame update
-        void Start()
-        {
-            var ds = new ParticipantDataset("/home/awesome/STU/VD/VD_dataset/dataset/transformed");
-            ds.GetAge();
-            ds.GetGender();
-            ds.GetDrivingLicence();
-
-            ds.GetParticipantDetail(10);
-            ds.GetParticipantDuration(10);
-
-            foreach (KeyValuePair<string, string> kvp in ds.GetParticipantDuration(10))
-            {
-                Debug.Log(kvp.Key);
-                Debug.Log(kvp.Value);
-            }
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
         }
     }
 }
