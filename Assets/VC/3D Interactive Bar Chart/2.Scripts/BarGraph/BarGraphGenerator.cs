@@ -13,39 +13,37 @@ using UnityEditor;
 
 namespace BarGraph.VittorCloud
 {
-
     #region CustomEventsDeclaration
+
     [Serializable]
     public class OnBarPointerDownEvent : UnityEvent<GameObject>
     {
     }
+
     [Serializable]
     public class OnBarPointerUpEvent : UnityEvent<GameObject>
     {
     }
+
     [Serializable]
     public class OnBarHoverEnterEvent : UnityEvent<GameObject>
     {
-
     }
+
     [Serializable]
     public class OnBarHoverExitEvent : UnityEvent<GameObject>
     {
     }
+
     #endregion
 
     [Serializable]
     public class BarGraphDataSet
     {
-
         public string GroupName = "groupname";
         public Color barColor;
         public Material barMaterial;
         public List<XYBarValues> ListOfBars;
-
-       
-
-
     }
 
     [Serializable]
@@ -59,8 +57,24 @@ namespace BarGraph.VittorCloud
     {
         #region publicVariables
 
-        public enum AnimatioType { None = 0, OneByOne = 1, allTogether = 2, animationWithGradient = 3 };
-        public enum BarColor { SolidColor = 1, CustumMaterial = 2, HeightWiseGradient = 3 };
+        public enum AnimatioType
+        {
+            None = 0,
+            OneByOne = 1,
+            allTogether = 2,
+            animationWithGradient = 3
+        };
+
+        public enum BarColor
+        {
+            SolidColor = 1,
+            CustumMaterial = 2,
+            HeightWiseGradient = 3
+        };
+
+        //[Header("Scatter group setting")]
+        public bool forceOneGroup = true;
+
 
         //[Header("Graph Settings")]
         public int MaxHeight = 10;
@@ -73,9 +87,9 @@ namespace BarGraph.VittorCloud
         public float offsetBetweenXRow = 0;
         public float offsetBetweenZRow = 0;
 
-        [Header("Graph Animation Settings")]
-        [Range(0, 15)]
+        [Header("Graph Animation Settings")] [Range(0, 15)]
         public float animationSpeed = 1.5f;
+
         public AnimatioType graphAnimation = AnimatioType.OneByOne;
 
         //[Header("Bar Settings")]
@@ -84,17 +98,13 @@ namespace BarGraph.VittorCloud
         public BarColor barColorProperty = BarColor.SolidColor;
         public float barScaleFactor = 1;
 
-       
+
         public BarGraphManager GraphRef;
 
-        [HideInInspector]
-        public int yMaxValue;
-        [HideInInspector]
-        public int yMinValue;
+        [HideInInspector] public int yMaxValue;
+        [HideInInspector] public int yMinValue;
 
         public Gradient HeightWiseGradient = new Gradient();
-
-
 
         #endregion
 
@@ -114,10 +124,10 @@ namespace BarGraph.VittorCloud
         BarGraphManager Graph;
         bool barCompleted = false;
         Color gredientStartColor = Color.white;
+
         #endregion
 
         #region CustomEvents
-
 
         public OnBarPointerDownEvent OnBarPointerDown;
 
@@ -131,10 +141,7 @@ namespace BarGraph.VittorCloud
         public OnBarHoverExitEvent OnBarHoverExit;
 
 
-
         public UnityEvent OnInitialGraphCompleted;
-
-
 
         #endregion
 
@@ -158,30 +165,28 @@ namespace BarGraph.VittorCloud
                 OnBarHoverExit = new OnBarHoverExitEvent();
 
 
-
             if (graphAnimation == AnimatioType.animationWithGradient)
                 barColorProperty = BarColor.HeightWiseGradient;
 
             if (barColorProperty == BarColor.HeightWiseGradient)
                 gredientStartColor = HeightWiseGradient.Evaluate(0);
         }
+
         private void OnDisable()
         {
-
             if (Graph != null)
                 Graph.GraphUpdated -= OnGraphAnimationCompleted;
         }
+
         #endregion
 
         #region GenerateGraphBox
+
         public void GeneratBarGraph(List<BarGraphDataSet> dataSet)
         {
-
-
             if (dataSet == null)
             {
                 return;
-
             }
 
 
@@ -195,7 +200,6 @@ namespace BarGraph.VittorCloud
 
             ParseTheDataset();
 
-      
 
             if ((int)graphAnimation == 1 || (int)graphAnimation == 3)
                 StartCoroutine(CreateBarsWithAnimTypeOneOrThree());
@@ -210,24 +214,22 @@ namespace BarGraph.VittorCloud
                 Debug.LogError("No data set inserted!!");
                 return;
             }
+
             for (int i = 0; i < ListOfDataSet.Count; i++)
             {
-
                 if (ListOfDataSet[i].ListOfBars.Count <= 0)
                 {
                     Debug.LogError("No data set inserted at" + ListOfDataSet[i].GroupName);
                     return;
                 }
+
                 for (int j = 0; j < ListOfDataSet[i].ListOfBars.Count; j++)
                 {
                     zvalues.Add(ListOfDataSet[i].GroupName);
                     xvalues.Add(ListOfDataSet[i].ListOfBars[j].XValue);
                     yvalues.Add(ListOfDataSet[i].ListOfBars[j].YValue);
                 }
-
             }
-
-
 
 
             ValidateRange();
@@ -241,7 +243,6 @@ namespace BarGraph.VittorCloud
             int max;
 
 
-
             min = (int)MathExtension.GetMinValue(yvalues);
             max = (int)MathExtension.GetMaxValue(yvalues);
 
@@ -253,22 +254,18 @@ namespace BarGraph.VittorCloud
 
             if (yMinValue > min)
             {
-
                 yMinValue = yMinValue / 2;
-
             }
 
             if (yMaxValue < max)
             {
                 yMaxValue = yMaxValue * 2;
-
             }
 
 
             if (yMaxValue <= yMinValue || yMaxValue < max)
             {
                 yMaxValue = max;
-
             }
 
             //  Debug.Log("yMinValue" + yMinValue);
@@ -281,8 +278,6 @@ namespace BarGraph.VittorCloud
         }
 
 
-
-
         void InitializeGraph()
         {
             Graph = Instantiate(GraphRef, transform.position, Quaternion.identity);
@@ -292,6 +287,12 @@ namespace BarGraph.VittorCloud
             float XLength = xStart + ((xMaxSize - 1) * segmentSizeOnXaxis);
             float YLength = yStart + ((yMaxSize - 1) * segmentSizeOnYaxis);
             float ZLength = zStart + ((zMaxSize - 1) * segmentSizeOnZaxis);
+            
+            if (this.forceOneGroup)
+            {
+                ZLength = 1;
+            }
+
             Graph.setBarScale(barScaleFactor);
             Graph.InitGraphBox(XLength, YLength, ZLength, segmentSizeOnXaxis, segmentSizeOnYaxis, segmentSizeOnZaxis);
             Graph.SetBarRef(barPrefab);
@@ -301,7 +302,6 @@ namespace BarGraph.VittorCloud
             Graph.InitZAxis(zMaxSize, zStart, segmentSizeOnZaxis, offsetBetweenZRow, xStart, segmentSizeOnXaxis);
 
             Graph.GraphUpdated += OnGraphAnimationCompleted;
-
         }
 
 
@@ -309,91 +309,100 @@ namespace BarGraph.VittorCloud
         {
             for (int i = 0; i < ListOfDataSet.Count; i++)
             {
-                //Debug.Log(ListOfDataSet.Count);
-                //Debug.Log(ListOfDataSet[i].ListOfBars.Count);
                 for (int j = 0; j < ListOfDataSet[i].ListOfBars.Count; j++)
                 {
                     Graph.AssignAxisName(j, i, ListOfDataSet[i].ListOfBars[j].XValue, ListOfDataSet[i].GroupName);
                 }
 
+                if (this.forceOneGroup)
+                {
+                    break;
+                }
             }
-
-
         }
 
         public IEnumerator CreateBarsWithAnimTypeOneOrThree()
         {
-
             for (int i = 0; i < ListOfDataSet.Count; i++)
             {
                 for (int j = 0; j < ListOfDataSet[i].ListOfBars.Count; j++)
                 {
-
-
                     float yscaleFactor = (((yMaxSize - 1) * segmentSizeOnYaxis) + yStart) / (yMaxValue - yMinValue);
                     if (barColorProperty == BarColor.SolidColor)
-                        yield return StartCoroutine(Graph.GenerateGraphBarWithAnimTypeOne(j, i, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor, animationSpeed, yMinValue, xMaxSize, ListOfDataSet[i].barColor));
+                        yield return StartCoroutine(Graph.GenerateGraphBarWithAnimTypeOne(j, i,
+                            ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor, animationSpeed, yMinValue, xMaxSize,
+                            ListOfDataSet[i].barColor));
 
                     else if (barColorProperty == BarColor.HeightWiseGradient)
                     {
-
                         float time = (ListOfDataSet[i].ListOfBars[j].YValue - yMinValue) / (yMaxValue - yMinValue);
                         Color barcolor = HeightWiseGradient.Evaluate(time);
 
                         if (graphAnimation == AnimatioType.animationWithGradient)
                         {
-                            yield return StartCoroutine(Graph.GenerateGraphBarWithAnimTypeThree(j, i, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor, animationSpeed, yMinValue, xMaxSize, barcolor, gredientStartColor));
+                            yield return StartCoroutine(Graph.GenerateGraphBarWithAnimTypeThree(j, i,
+                                ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor, animationSpeed, yMinValue,
+                                xMaxSize, barcolor, gredientStartColor));
                         }
                         else
-                            yield return StartCoroutine(Graph.GenerateGraphBarWithAnimTypeOne(j, i, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor, animationSpeed, yMinValue, xMaxSize, barcolor));
+                            yield return StartCoroutine(Graph.GenerateGraphBarWithAnimTypeOne(j, i,
+                                ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor, animationSpeed, yMinValue,
+                                xMaxSize, barcolor));
                     }
                     else
-                        yield return StartCoroutine(Graph.GenerateGraphBarWithAnimTypeOne(j, i, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor, animationSpeed, yMinValue, xMaxSize, ListOfDataSet[i].barMaterial));
+                        yield return StartCoroutine(Graph.GenerateGraphBarWithAnimTypeOne(j, i,
+                            ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor, animationSpeed, yMinValue, xMaxSize,
+                            ListOfDataSet[i].barMaterial));
+
                     yield return new WaitForSeconds(0.2f);
                 }
-
             }
+
             Graph.GraphUpdated();
             yield return null;
         }
 
         public void CreateBarsWithAnimTypeTwo()
         {
-
             for (int i = 0; i < ListOfDataSet.Count; i++)
             {
                 for (int j = 0; j < ListOfDataSet[i].ListOfBars.Count; j++)
                 {
                     float yscaleFactor = (((yMaxSize - 1) * segmentSizeOnYaxis) + yStart) / (yMaxValue - yMinValue);
                     if (barColorProperty == BarColor.SolidColor)
-                        Graph.GenerateBarWithAnimTypeTwo(j, i, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor, animationSpeed, yMinValue, xMaxSize, ListOfDataSet[i].barColor);
+                        Graph.GenerateBarWithAnimTypeTwo(j, i, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor,
+                            animationSpeed, yMinValue, xMaxSize, ListOfDataSet[i].barColor);
                     else if (barColorProperty == BarColor.HeightWiseGradient)
                     {
-
                         float time = (ListOfDataSet[i].ListOfBars[j].YValue - yMinValue) / (yMaxValue - yMinValue);
                         Color barcolor = HeightWiseGradient.Evaluate(time);
-                        Graph.GenerateBarWithAnimTypeTwo(j, i, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor, animationSpeed, yMinValue, xMaxSize, barcolor);
+
+                        if (this.forceOneGroup)
+                        {
+                            Graph.GenerateBarWithAnimTypeTwo(j, 0, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor,
+                                animationSpeed, yMinValue, xMaxSize, barcolor);
+                        }
+                        else
+                        {
+                            Graph.GenerateBarWithAnimTypeTwo(j, i, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor,
+                                animationSpeed, yMinValue, xMaxSize, barcolor);
+                        }
                     }
 
 
                     else
-                        Graph.GenerateBarWithAnimTypeTwo(j, i, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor, animationSpeed, yMinValue, xMaxSize, ListOfDataSet[i].barMaterial);
-
+                        Graph.GenerateBarWithAnimTypeTwo(j, i, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor,
+                            animationSpeed, yMinValue, xMaxSize, ListOfDataSet[i].barMaterial);
                 }
-
             }
 
 
             StartCoroutine(Graph.AnimateBarsWithAnimTypeTwo(animationSpeed));
-
-
-
         }
 
         #endregion
 
         #region testing Methods
-
 
         public void AddNewDataSet(int dataSetIndex, int xyValueIndex, float yValue)
         {
@@ -405,39 +414,36 @@ namespace BarGraph.VittorCloud
                 float yscaleFactor = (yMaxSize * segmentSizeOnYaxis) / (yMaxValue - yMinValue);
 
 
-
                 if (barColorProperty == BarColor.HeightWiseGradient)
                 {
                     float time = (yValue - yMinValue) / (yMaxValue - yMinValue);
                     Color barcolor = HeightWiseGradient.Evaluate(time);
                     if (graphAnimation == AnimatioType.animationWithGradient)
                     {
-
-                        Graph.UpdateBarHeight(xyValueIndex, dataSetIndex, ListOfDataSet[dataSetIndex].ListOfBars[xyValueIndex].YValue, yscaleFactor, animationSpeed, yMinValue, barcolor, gredientStartColor);
+                        Graph.UpdateBarHeight(xyValueIndex, dataSetIndex,
+                            ListOfDataSet[dataSetIndex].ListOfBars[xyValueIndex].YValue, yscaleFactor, animationSpeed,
+                            yMinValue, barcolor, gredientStartColor);
                     }
                     else
                     {
-
-                        Graph.UpdateBarHeight(xyValueIndex, dataSetIndex, ListOfDataSet[dataSetIndex].ListOfBars[xyValueIndex].YValue, yscaleFactor, animationSpeed, yMinValue, barcolor);
-
+                        Graph.UpdateBarHeight(xyValueIndex, dataSetIndex,
+                            ListOfDataSet[dataSetIndex].ListOfBars[xyValueIndex].YValue, yscaleFactor, animationSpeed,
+                            yMinValue, barcolor);
                     }
                 }
 
                 else
                 {
-
-                    Graph.UpdateBarHeight(xyValueIndex, dataSetIndex, ListOfDataSet[dataSetIndex].ListOfBars[xyValueIndex].YValue, yscaleFactor, animationSpeed, yMinValue);
+                    Graph.UpdateBarHeight(xyValueIndex, dataSetIndex,
+                        ListOfDataSet[dataSetIndex].ListOfBars[xyValueIndex].YValue, yscaleFactor, animationSpeed,
+                        yMinValue);
                 }
-
-
-
             }
         }
 
 
         public void OnGraphAnimationCompleted()
         {
-
             modifyData = true;
             if (!barCompleted)
             {
@@ -448,9 +454,6 @@ namespace BarGraph.VittorCloud
 
         public void ModifyGraph()
         {
-
-
-
             for (int i = 0; i < ListOfDataSet.Count; i++)
             {
                 xvalues.RemoveAt(0);
@@ -461,21 +464,16 @@ namespace BarGraph.VittorCloud
                 Graph.RemoveAndShiftXpoints(ListOfDataSet[i].ListOfBars[lastIndex].XValue);
 
 
-
                 float yscaleFactor = (yMaxSize * segmentSizeOnYaxis) / (yMaxValue - yMinValue);
                 if (barColorProperty == BarColor.SolidColor)
-                    Graph.GenerateBarWithAnimTypeTwo(lastIndex, i, ListOfDataSet[i].ListOfBars[lastIndex].YValue, yscaleFactor, animationSpeed, yMinValue, xMaxSize, ListOfDataSet[i].barColor);
+                    Graph.GenerateBarWithAnimTypeTwo(lastIndex, i, ListOfDataSet[i].ListOfBars[lastIndex].YValue,
+                        yscaleFactor, animationSpeed, yMinValue, xMaxSize, ListOfDataSet[i].barColor);
                 else
-                    Graph.GenerateBarWithAnimTypeTwo(lastIndex, i, ListOfDataSet[i].ListOfBars[lastIndex].YValue, yscaleFactor, animationSpeed, yMinValue, xMaxSize, ListOfDataSet[i].barMaterial);
-
+                    Graph.GenerateBarWithAnimTypeTwo(lastIndex, i, ListOfDataSet[i].ListOfBars[lastIndex].YValue,
+                        yscaleFactor, animationSpeed, yMinValue, xMaxSize, ListOfDataSet[i].barMaterial);
             }
-
-
-
         }
-
 
         #endregion
     }
 }
-

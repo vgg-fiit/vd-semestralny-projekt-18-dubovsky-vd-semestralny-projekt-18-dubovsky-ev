@@ -9,22 +9,26 @@ namespace BarGraph.VittorCloud
     public class BarGraphManager : GraphBox
     {
         #region PublicVariables
-        
+
         public Action GraphUpdated;
+
         #endregion
 
         #region PrivateVariables
+
         GameObject barRef;
         GameObject sphereRef;
         BarGraphGenerator graphGenerator;
+
         #endregion
 
         #region UnityCallBacks
+
         public void Awake()
         {
             base.Awake();
-
         }
+
         public void Start()
         {
             if (barRef == null)
@@ -32,26 +36,26 @@ namespace BarGraph.VittorCloud
 
 
             graphGenerator = GetComponentInParent<BarGraphGenerator>();
-            
         }
+
         #endregion
 
         #region BarGraph Custom methods
 
-
-        public void SetBarRef(GameObject bar) {
-
+        public void SetBarRef(GameObject bar)
+        {
             barRef = bar;
-
         }
+
         public void SetSphereRef(GameObject sphere)
         {
-
             sphereRef = sphere;
-
         }
+
         #region AnimationTypeOne
-        public IEnumerator GenerateGraphBarWithAnimTypeOne(int xIndex, int zIndex, float yValue, float scaleFactor, float animSpeed, int ymin, int xMax, Color barColor)
+
+        public IEnumerator GenerateGraphBarWithAnimTypeOne(int xIndex, int zIndex, float yValue, float scaleFactor,
+            float animSpeed, int ymin, int xMax, Color barColor)
         {
             if (barRef == null)
                 yield return null;
@@ -77,12 +81,11 @@ namespace BarGraph.VittorCloud
 
 
             yield return new WaitForEndOfFrame();
-
         }
-        public IEnumerator GenerateGraphBarWithAnimTypeOne(int xIndex, int zIndex, float yValue, float scaleFactor, float animSpeed, int ymin, int xMax, Material barMaterial)
+
+        public IEnumerator GenerateGraphBarWithAnimTypeOne(int xIndex, int zIndex, float yValue, float scaleFactor,
+            float animSpeed, int ymin, int xMax, Material barMaterial)
         {
-
-
             if (barRef == null)
                 yield return null;
 
@@ -96,8 +99,6 @@ namespace BarGraph.VittorCloud
             bar.transform.localScale = bar.transform.localScale * graphScaleFactor;
 
 
-
-
             ListOfGroups[zIndex].ListOfBar.Add(bar);
 
             BarProperty barProperty = bar.GetComponent<BarProperty>();
@@ -106,20 +107,20 @@ namespace BarGraph.VittorCloud
                 barProperty.SetBarMat(barMaterial);
 
             float yscale = (yValue - ymin) * scaleFactor;
-            yield return StartCoroutine(AnimateBarsWithAnimTypeOne(bar.GetComponent<BarProperty>(), yscale, yValue, animSpeed, false));
+            yield return StartCoroutine(AnimateBarsWithAnimTypeOne(bar.GetComponent<BarProperty>(), yscale, yValue,
+                animSpeed, false));
 
             yield return new WaitForEndOfFrame();
-
         }
-        public IEnumerator AnimateBarsWithAnimTypeOne(BarProperty bar, float barScale, float yValue, float animSpeed, bool isUpdating)
+
+        public IEnumerator AnimateBarsWithAnimTypeOne(BarProperty bar, float barScale, float yValue, float animSpeed,
+            bool isUpdating)
         {
             while (true)
             {
-
-
-
                 Vector3 targetScale = new Vector3(bar.transform.localScale.x, barScale, bar.transform.localScale.z);
                 BarProperty barProperty = bar.GetComponent<BarProperty>();
+
 
                 if (bar.transform.localScale.y > targetScale.y)
                 {
@@ -155,13 +156,18 @@ namespace BarGraph.VittorCloud
                 GraphUpdated();
 
             yield return new WaitForEndOfFrame();
-
         }
+
         #endregion
 
         #region AnimationTypeTwo
-        public void GenerateBarWithAnimTypeTwo(int xIndex, int zIndex, float yValue, float scaleFactor, float animSpeed, int ymin, int xMax, Color barColor)
+
+        public void GenerateBarWithAnimTypeTwo(int xIndex, int zIndex, float yValue, float scaleFactor, float animSpeed,
+            int ymin, int xMax, Color barColor)
         {
+            if (yValue <= 0)
+                return;
+
             if (barRef == null)
                 return;
 
@@ -172,7 +178,7 @@ namespace BarGraph.VittorCloud
             sphere.transform.parent = ListOfGroups[zIndex].transform;
             //Vector3 pos = new Vector3(ListOfXPoint[xIndex].transform.position.x, 0, ListOfZPoints[zIndex].transform.position.z);
             // Debug.Log("Yes I am calling -----");
-           
+
 
             Vector3 pos = new Vector3(ListOfXPoint[xIndex].transform.localPosition.x, 0, 0);
             bar.transform.localPosition = pos;
@@ -192,9 +198,10 @@ namespace BarGraph.VittorCloud
             sphere.transform.localPosition = pos1;
 
             ListOfGroups[zIndex].ListOfBar.Add(bar);
-
         }
-        public void GenerateBarWithAnimTypeTwo(int xIndex, int zIndex, float yValue, float scaleFactor, float animSpeed, int ymin, int xMax, Material barMaterial)
+
+        public void GenerateBarWithAnimTypeTwo(int xIndex, int zIndex, float yValue, float scaleFactor, float animSpeed,
+            int ymin, int xMax, Material barMaterial)
         {
             if (barRef == null)
                 return;
@@ -217,23 +224,19 @@ namespace BarGraph.VittorCloud
             bar.transform.localScale = new Vector3(bar.transform.localScale.x, yscale, bar.transform.localScale.z);
 
             ListOfGroups[zIndex].ListOfBar.Add(bar);
-
         }
+
         public IEnumerator AnimateBarsWithAnimTypeTwo(float animSpeed)
         {
             barParent.transform.localScale = new Vector3(1, 0, 1);
             while (true)
             {
-
-
                 Vector3 scale = barParent.transform.localScale + new Vector3(0, Time.deltaTime * animSpeed, 0);
                 scale.y = Mathf.Clamp(scale.y, 0, 1);
                 barParent.transform.localScale = scale;
 
                 if (barParent.transform.localScale.y >= 1)
                 {
-                
-
                     foreach (BarProperty bar in barParent.GetComponentsInChildren<BarProperty>())
 
                         bar.GetComponent<BarProperty>().SetLabelEnabel();
@@ -243,20 +246,22 @@ namespace BarGraph.VittorCloud
 
                 yield return new WaitForEndOfFrame();
             }
+
             GraphUpdated();
             yield return new WaitForEndOfFrame();
-
         }
+
         #endregion
 
         #region AnimtionTypeThree
-        public IEnumerator GenerateGraphBarWithAnimTypeThree(int xIndex, int zIndex, float yValue, float scaleFactor, float animSpeed, int ymin, int xMax, Color barColor, Color barStartColor)
+
+        public IEnumerator GenerateGraphBarWithAnimTypeThree(int xIndex, int zIndex, float yValue, float scaleFactor,
+            float animSpeed, int ymin, int xMax, Color barColor, Color barStartColor)
         {
             if (barRef == null)
                 yield return null;
 
             barParent.transform.localScale = Vector3.one;
-
 
 
             GameObject bar = GameObject.Instantiate(barRef, transform.position, transform.rotation);
@@ -273,17 +278,18 @@ namespace BarGraph.VittorCloud
 
             ListOfGroups[zIndex].ListOfBar.Add(bar);
             float yscale = (yValue - ymin) * scaleFactor;
-            yield return StartCoroutine(AnimateBarsWithAnimTypeThree(bar.GetComponent<BarProperty>(), yscale, yValue, animSpeed, false, barColor, barStartColor));
+            yield return StartCoroutine(AnimateBarsWithAnimTypeThree(bar.GetComponent<BarProperty>(), yscale, yValue,
+                animSpeed, false, barColor, barStartColor));
 
 
             yield return new WaitForEndOfFrame();
-
         }
-        public IEnumerator AnimateBarsWithAnimTypeThree(BarProperty bar, float barScale, float yValue, float animSpeed, bool isUpdating, Color barColor, Color barStartColor)
+
+        public IEnumerator AnimateBarsWithAnimTypeThree(BarProperty bar, float barScale, float yValue, float animSpeed,
+            bool isUpdating, Color barColor, Color barStartColor)
         {
             while (true)
             {
-
                 BarProperty barProperty = bar.GetComponent<BarProperty>();
                 Color barCol = Color.Lerp(barProperty.GetBarColor(), barColor, Time.deltaTime * animSpeed * 0.4f);
                 barProperty.SetBarColor(barCol);
@@ -293,7 +299,6 @@ namespace BarGraph.VittorCloud
                     Vector3 scale = bar.transform.localScale - new Vector3(0, Time.deltaTime * animSpeed, 0);
                     scale.y = Mathf.Clamp(scale.y, targetScale.y, yValue);
                     bar.transform.localScale = scale;
-
 
 
                     if (bar.transform.localScale.y <= targetScale.y)
@@ -319,7 +324,6 @@ namespace BarGraph.VittorCloud
                 }
 
 
-
                 yield return new WaitForEndOfFrame();
             }
 
@@ -327,59 +331,48 @@ namespace BarGraph.VittorCloud
                 GraphUpdated();
 
             yield return new WaitForEndOfFrame();
-
         }
+
         #endregion
 
         #region UpdateGraph
+
         public void UpdateBarHeight(int xIndex, int zIndex, float yValue, float scaleFactor, float animSpeed, int ymin)
         {
-
-
             GameObject bar = ListOfGroups[zIndex].ListOfBar[xIndex];
             float yscale = (yValue - ymin) * scaleFactor;
             BarProperty barProperty = bar.GetComponent<BarProperty>();
             barProperty.LabelContainer.SetActive(false);
             StartCoroutine(AnimateBarsWithAnimTypeOne(barProperty, yscale, yValue, animSpeed, true));
-
-
-
         }
-        public void UpdateBarHeight(int xIndex, int zIndex, float yValue, float scaleFactor, float animSpeed, int ymin, Color barColor)
+
+        public void UpdateBarHeight(int xIndex, int zIndex, float yValue, float scaleFactor, float animSpeed, int ymin,
+            Color barColor)
         {
-
-
             GameObject bar = ListOfGroups[zIndex].ListOfBar[xIndex];
             float yscale = (yValue - ymin) * scaleFactor;
             BarProperty barProperty = bar.GetComponent<BarProperty>();
             barProperty.LabelContainer.SetActive(false);
             barProperty.SetBarColor(barColor);
             StartCoroutine(AnimateBarsWithAnimTypeOne(barProperty, yscale, yValue, animSpeed, true));
-
-
-
         }
-        public void UpdateBarHeight(int xIndex, int zIndex, float yValue, float scaleFactor, float animSpeed, int ymin, Color barColor, Color barStartColor)
+
+        public void UpdateBarHeight(int xIndex, int zIndex, float yValue, float scaleFactor, float animSpeed, int ymin,
+            Color barColor, Color barStartColor)
         {
-
-
             GameObject bar = ListOfGroups[zIndex].ListOfBar[xIndex];
             BarProperty barProperty = bar.GetComponent<BarProperty>();
             float yscale = (yValue - ymin) * scaleFactor;
             barProperty.LabelContainer.SetActive(false);
-            StartCoroutine(AnimateBarsWithAnimTypeThree(barProperty, yscale, yValue, animSpeed, true, barColor, barStartColor));
-
-
-
+            StartCoroutine(AnimateBarsWithAnimTypeThree(barProperty, yscale, yValue, animSpeed, true, barColor,
+                barStartColor));
         }
-        #endregion
 
+        #endregion
 
 
         public void RemoveAndShiftXpoints(string xValue)
         {
-
-
             for (int i = 0; i < ListOfXPoint.Count - 1; i++)
             {
                 //Debug.Log("Cont " + i + " " + ListOfXPoint[i].labelText + " " + ListOfXPoint[i + 1].labelText);
@@ -388,16 +381,16 @@ namespace BarGraph.VittorCloud
             }
 
             ListOfXPoint[ListOfXPoint.Count - 1].labelText = xValue.ToString();
-
         }
+
         public void SetBarProperties(BarProperty barProperty)
         {
             barProperty.barClickEvents.PointerDownOnBar += OnBarPointerDown;
             barProperty.barClickEvents.PointerUpOnBar += OnBarPointerUp;
             barProperty.barClickEvents.PointerEnterOnBar += OnBarPointerEnter;
             barProperty.barClickEvents.PointerExitOnBar += OnBarPointerExit;
-
         }
+
         #endregion
 
         #region ClickEvents
@@ -406,23 +399,26 @@ namespace BarGraph.VittorCloud
         {
             if (graphGenerator != null)
                 graphGenerator.OnBarPointerDown.Invoke(Clickedbar);
-
         }
+
         public void OnBarPointerUp(GameObject Clickedbar)
         {
             if (graphGenerator != null)
                 graphGenerator.OnBarPointerUp.Invoke(Clickedbar);
         }
+
         public void OnBarPointerEnter(GameObject Clickedbar)
         {
             if (graphGenerator != null)
                 graphGenerator.OnBarHoverEnter.Invoke(Clickedbar);
         }
+
         public void OnBarPointerExit(GameObject Clickedbar)
         {
             if (graphGenerator != null)
                 graphGenerator.OnBarHoverExit.Invoke(Clickedbar);
         }
+
         #endregion
     }
 }
