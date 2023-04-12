@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using _Scripts.DataLoader;
 using BarGraph.VittorCloud;
+using static _Scripts.DataLoader.ParticipantDataset;
 
 //"startTimestamp", "ParticipantID", "eyeTrackingStartTime", "gameStartTime", "route", "routeSteps", "navigationType", "gender", "age", "drivingLicense",  
 
@@ -28,8 +32,10 @@ public class BarGraphDataLoadController : MonoBehaviour
     private List<XYBarValues> ListOfBars;
     private List<BarGraphDataSet> newExampleDataSet = new List<BarGraphDataSet>();
     BarGraphGenerator barGraphGenerator;
+    private int time_interval = 30; // seconds
 
-    // Start is called before the first frame update
+    private ParticipantDataset participantDataset = new ParticipantDataset();
+
     void Awake()
     {
         barGraphGenerator = this.GetComponent<BarGraphGenerator>();
@@ -133,7 +139,6 @@ public class BarGraphDataLoadController : MonoBehaviour
     public void PressQ()
     {
 
-        newExampleDataSet.Clear();
 
         var xy1 = new XYBarValues
         {
