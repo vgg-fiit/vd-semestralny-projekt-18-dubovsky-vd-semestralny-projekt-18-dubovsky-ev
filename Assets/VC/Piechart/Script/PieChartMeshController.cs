@@ -15,8 +15,9 @@ namespace PieChart.ViitorCloud
     [Serializable]
     public class PieChartMeshController : MonoBehaviour
     {
-        PieChartMesh mPieChart;
+        public GameObject pieChartUIInfo;
 
+        PieChartMesh mPieChart;
 
         bool randomData;
         List<float> Data =new List<float>(); 
@@ -105,6 +106,7 @@ namespace PieChart.ViitorCloud
 
             if (gameObject.GetComponent<PieChartMesh>() == null)
                 mPieChart = gameObject.AddComponent<PieChartMesh>() as PieChartMesh;
+            mPieChart.pieChartUIInfo = pieChartUIInfo.gameObject;
 
             if (mPieChart != null)
             {

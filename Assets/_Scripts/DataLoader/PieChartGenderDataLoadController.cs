@@ -25,8 +25,8 @@ public class PieChartGenderDataLoadController : MonoBehaviour
         dataDescription.Add("Female");
 
         //Color
-        customColors.Add(Color.red);
         customColors.Add(Color.blue);
+        customColors.Add(Color.red);
 
         //pocet kolko segmentob
         segment = Data.Count;

@@ -3,7 +3,11 @@ guid: 954e0293fe37e6d45b04866b66e1fa08
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - pieChartMeshController: {instanceID: 0}
+  - pieChartUIInfo: {fileID: 4361398792670910374, guid: f96bd150264133b40b166046a94a11fb, type: 3}
+  - mainMaterial: {instanceID: 0}
+  - parentTransform: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

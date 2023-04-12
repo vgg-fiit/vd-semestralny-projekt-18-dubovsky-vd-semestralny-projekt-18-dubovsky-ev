@@ -3,10 +3,12 @@ using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using TMPro;
 namespace PieChart.ViitorCloud
 {
     public class PieChartMesh : MonoBehaviour
     {
+        public GameObject pieChartUIInfo;
 
         float[] mData;
         string[] mDataDescription;
@@ -363,6 +365,7 @@ namespace PieChart.ViitorCloud
                 var Final = subTris.Concat(subTris3D).Concat(subTrisLeft).Concat(subTrisRight).Concat(sidetrinaglesFinal);
                 //CreateObjectAndSetMesh(FinalVerticesArray, Final.ToArray(), "Parts" + count, count);
                 CreateObjectAndSetMesh(FinalVerticesArray, Final.ToArray(), mDataDescription[count], count);
+                
 
                 yield return new WaitUntil(() => partcreated);
             }
@@ -400,6 +403,7 @@ namespace PieChart.ViitorCloud
 
             gameObj.AddComponent<PartProperties>();
 
+
             if (animationType == PieChartMeshController.AnimationType.Rotation || animationType == PieChartMeshController.AnimationType.UpDownAndRotation)
                 StartCoroutine(AnimateThePieChartRotation(gameObj, triangles.Length));
             else if (animationType == PieChartMeshController.AnimationType.NoAnimation)
@@ -421,6 +425,10 @@ namespace PieChart.ViitorCloud
                 partcreated = true;
             }
 
+            GameObject ui = Instantiate(pieChartUIInfo, new Vector3(gameObj.GetComponent<PartProperties>().forward.x, gameObj.GetComponent<PartProperties>().forward.y, gameObj.GetComponent<PartProperties>().forward.z - 0.8f), Quaternion.identity);
+            ui.transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = objectname;
+            ui.transform.parent = gameObj.transform;
+            //
             //yield return new WaitUntil(() => partcreated);
 
         }

@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
 namespace PieChart.ViitorCloud
 {
     public class ClickEffect : MonoBehaviour
     {
+        private TextMeshProUGUI age;
+        private TextMeshProUGUI gender;
+        private TextMeshProUGUI licence;
+        private TextMeshProUGUI navType;
         public static ClickEffect isn { set; get; }
 
         internal Dictionary<GameObject, GameObject> allParsObjectAndCanvasObjectDict = new Dictionary<GameObject, GameObject>();
@@ -23,6 +29,12 @@ namespace PieChart.ViitorCloud
             isn = this;
             Maincamera = GetComponent<Camera>();
             targetedObject = gameObject;
+
+            GameObject ui = GameObject.Find("VarInfo");
+            age = ui.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            gender = ui.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
+            licence = ui.transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+            navType = ui.transform.GetChild(3).GetComponent<TextMeshProUGUI>();
         }
 
         // Update is called once per frame
@@ -33,16 +45,26 @@ namespace PieChart.ViitorCloud
                 Ray ray = Maincamera.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out hit))
                 {
+                    Debug.Log(hit.collider.transform.name);
+
                     if (hit.collider.gameObject.CompareTag("Part"))
                     {
-                        Debug.Log(hit.collider.transform.tag);
-                        Debug.Log(hit.collider.transform.name);
+                        //Debug.Log(hit.collider.transform.tag);
+                        //Debug.Log(hit.collider.transform.name);
                         StaticFiltrationController.ChangeFiltration(hit.collider.transform.name);
+
+                        age.text = StaticFiltrationController.age.ToString();
+                        licence.text = StaticFiltrationController.licence.ToString();
+                        navType.text = StaticFiltrationController.navType.ToString();
+                        gender.text = StaticFiltrationController.gender.ToString();
+
                         if (targetedObject != hit.collider.gameObject)
                             hit.collider.gameObject.GetComponent<PartProperties>().MyCurrntPosition = hit.collider.transform.position;
                     
                         if (targetedObject != Maincamera.gameObject && hit.collider != null)
                         {
+
+                           
                             if (targetedObject != hit.collider.gameObject)
                             {
                                 targetedObject.transform.position = targetedObject.GetComponent<PartProperties>().MyCurrntPosition;
@@ -58,7 +80,10 @@ namespace PieChart.ViitorCloud
                     foreach (KeyValuePair<GameObject, GameObject> item in allParsObjectAndCanvasObjectDict)
                     {
                         if (item.Value.GetComponent<Image>().color.a < 0.2)
+                        {
                             ReverseAnimation(item.Value.GetComponent<Animation>(), "reducethealpha");
+                            //Debug.Log("[recp");
+                        }
                     }
                     if (targetedObject != null)
                     {
@@ -74,7 +99,9 @@ namespace PieChart.ViitorCloud
                 {
                     float dis = Vector3.Distance(hit.transform.position, hit.transform.GetComponent<PartProperties>().forward);
                     if (dis > 1.1f)
+                    {
                         hit.transform.position = Vector3.Lerp(hit.transform.position, hit.transform.GetComponent<PartProperties>().forward, 1 * Time.deltaTime);
+                    }
                 }
             }   
                 //Raycast();

@@ -6,6 +6,8 @@ namespace PieChart.ViitorCloud
 {
     public class PieChart : MonoBehaviour
     {
+
+
         private PieChartGenderDataLoadController genderDataScript;
         private PieChartAgeDataLoadController ageDataScript;
         private PieChartNavTypeDataLoadController navTypeDataScript;
@@ -13,6 +15,8 @@ namespace PieChart.ViitorCloud
 
         [Tooltip("Object of PieChartMeshController")]
         public PieChartMeshController pieChartMeshController;
+
+        public GameObject pieChartUIInfo;
 
         [Tooltip("Each of the parts into which the will be divided")]
         public int segments;
@@ -87,6 +91,9 @@ namespace PieChart.ViitorCloud
             if (pieChartMeshController == null)
                 pieChartMeshController = gameObject.AddComponent<PieChartMeshController>();
             pieChartMeshController.parent = parentTransform.gameObject;
+            pieChartMeshController.pieChartUIInfo = pieChartUIInfo.gameObject;
+            Debug.Log(pieChartUIInfo.transform.name);
+
 
             //pieChartMeshController.onPointerEnter.AddListener(onPointerClick);
 

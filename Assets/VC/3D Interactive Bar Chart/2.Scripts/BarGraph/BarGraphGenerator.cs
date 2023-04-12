@@ -289,6 +289,8 @@ namespace BarGraph.VittorCloud
             Graph.transform.rotation = this.transform.rotation;
             Graph.transform.parent = this.transform;
 
+            
+
             float XLength = xStart + ((xMaxSize - 1) * segmentSizeOnXaxis);
             float YLength = yStart + ((yMaxSize - 1) * segmentSizeOnYaxis);
             float ZLength = zStart + ((zMaxSize - 1) * segmentSizeOnZaxis);
@@ -301,6 +303,10 @@ namespace BarGraph.VittorCloud
             Graph.InitZAxis(zMaxSize, zStart, segmentSizeOnZaxis, offsetBetweenZRow, xStart, segmentSizeOnXaxis);
 
             Graph.GraphUpdated += OnGraphAnimationCompleted;
+
+            //Graph.FetchXPointValues(0, 3);
+            //Graph.FetchYPointValues(0, 3);
+            //Graph.FetchZPointValues(0, 3);
 
         }
 
@@ -479,3 +485,4 @@ namespace BarGraph.VittorCloud
     }
 }
 
+ 

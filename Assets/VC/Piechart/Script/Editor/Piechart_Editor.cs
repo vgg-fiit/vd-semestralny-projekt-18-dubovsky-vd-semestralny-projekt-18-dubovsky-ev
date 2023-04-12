@@ -41,6 +41,9 @@ namespace PieChart.ViitorCloud
             EditorGUILayout.PropertyField(mainMaterial);
             EditorGUILayout.Space();
 
+            SerializedProperty pieChartUIInfo = serializedObject.FindProperty(GetMemberName(() => script.pieChartUIInfo));
+            EditorGUILayout.PropertyField(pieChartUIInfo);
+            EditorGUILayout.Space();
 
             SerializedProperty animationType = serializedObject.FindProperty(GetMemberName(() => script.animationType));
             EditorGUILayout.PropertyField(animationType);

@@ -19,8 +19,8 @@ public class BarGraphExample : MonoBehaviour
         if (exampleDataSet.Count == 0)
         {
 
-            Debug.LogError("ExampleDataSet is Empty!");
-            //return;
+            //Debug.LogError("ExampleDataSet is Empty!");
+            return;
         }
         barGraphGenerator.GeneratBarGraph(exampleDataSet);
 

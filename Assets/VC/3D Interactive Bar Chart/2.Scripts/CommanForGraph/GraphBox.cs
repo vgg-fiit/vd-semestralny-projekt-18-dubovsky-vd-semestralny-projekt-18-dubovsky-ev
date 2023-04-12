@@ -245,6 +245,7 @@ namespace Graph.VittorCloud
 
                 grouptemp.transform.parent = barParent.transform;
                 grouptemp.transform.localPosition = pos + new Vector3((zRowOffset * i), 0, 0);
+                grouptemp.transform.name = i.ToString();
 
                 grouptemp.GetComponent<RectTransform>().sizeDelta = new Vector2(XLength, YLength);
                 grouptemp.GetComponent<HorizontalLayoutGroup>().padding.left = (int)xStart;
@@ -278,7 +279,7 @@ namespace Graph.VittorCloud
             {
                 value += offset;
                 ListOfYPoints[i].labelText = value.ToString();
-                //Debug.Log("value " + value);
+                //Debug.Log("valueY " + value);
             }
         }
 
@@ -295,7 +296,7 @@ namespace Graph.VittorCloud
             {
                 value += offset;
                 ListOfXPoint[i].labelText = value.ToString();
-                //Debug.Log("value " + value);
+                //Debug.Log("valueX " + value);
             }
         }
 
