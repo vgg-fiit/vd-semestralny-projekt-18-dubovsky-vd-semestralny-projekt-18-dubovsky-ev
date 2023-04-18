@@ -19,6 +19,7 @@ public static class StaticFiltrationController
 
     public static void ChangeFiltration(string variable)
     {
+        Debug.Log(variable);
         switch (variable)
         {
             case "Male":
@@ -41,44 +42,64 @@ public static class StaticFiltrationController
                     gender = "female";
                 }
                 break;
-            case "10-20":
-                if (gender == "10-20")
+            case "20":
+                if (gender == "20")
                 {
                     age = "all";
                 }
                 else
                 {
-                    age = "10-20";
+                    age = "20";
                 }
                 break;
-            case "20-30":
-                if (gender == "20-30")
+            case "21":
+                if (gender == "21")
                 {
                     age = "all";
                 }
                 else
                 {
-                    age = "20-30";
+                    age = "21";
                 }
                 break;
-            case "30-40":
-                if (gender == "30-40")
+            case "22":
+                if (gender == "22")
                 {
                     age = "all";
                 }
                 else
                 {
-                    age = "30-40";
+                    age = "22";
                 }
                 break;
-            case "40-50":
-                if (gender == "40-50")
+            case "23":
+                if (gender == "23")
                 {
                     age = "all";
                 }
                 else
                 {
-                    age = "40-50";
+                    age = "23";
+                }
+                break;
+            case "24":
+                if (gender == "24")
+                {
+                    age = "all";
+                }
+                else
+                {
+                    age = "24";
+                }
+                break;
+            case "30":
+                if (gender == "30")
+                {
+                    age = "all";
+                }
+                else
+                {
+                    age = "30";
                 }
                 break;
             case "True":
