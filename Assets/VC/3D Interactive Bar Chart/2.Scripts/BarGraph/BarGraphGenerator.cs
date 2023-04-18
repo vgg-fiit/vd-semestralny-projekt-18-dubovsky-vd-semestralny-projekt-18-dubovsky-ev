@@ -73,8 +73,6 @@ namespace BarGraph.VittorCloud
         };
 
         //[Header("Scatter group setting")]
-        public bool forceOneGroup = true;
-
 
         //[Header("Graph Settings")]
         public int MaxHeight = 10;
@@ -284,16 +282,10 @@ namespace BarGraph.VittorCloud
             Graph.transform.rotation = this.transform.rotation;
             Graph.transform.parent = this.transform;
 
-            
 
             float XLength = xStart + ((xMaxSize - 1) * segmentSizeOnXaxis);
             float YLength = yStart + ((yMaxSize - 1) * segmentSizeOnYaxis);
             float ZLength = zStart + ((zMaxSize - 1) * segmentSizeOnZaxis);
-            
-            if (this.forceOneGroup)
-            {
-                ZLength = 1;
-            }
 
             Graph.setBarScale(barScaleFactor);
             Graph.InitGraphBox(XLength, YLength, ZLength, segmentSizeOnXaxis, segmentSizeOnYaxis, segmentSizeOnZaxis);
@@ -308,7 +300,6 @@ namespace BarGraph.VittorCloud
             //Graph.FetchXPointValues(0, 3);
             //Graph.FetchYPointValues(0, 3);
             //Graph.FetchZPointValues(0, 3);
-
         }
 
 
@@ -319,11 +310,6 @@ namespace BarGraph.VittorCloud
                 for (int j = 0; j < ListOfDataSet[i].ListOfBars.Count; j++)
                 {
                     Graph.AssignAxisName(j, i, ListOfDataSet[i].ListOfBars[j].XValue, ListOfDataSet[i].GroupName);
-                }
-
-                if (this.forceOneGroup)
-                {
-                    break;
                 }
             }
         }
@@ -384,16 +370,9 @@ namespace BarGraph.VittorCloud
                         float time = (ListOfDataSet[i].ListOfBars[j].YValue - yMinValue) / (yMaxValue - yMinValue);
                         Color barcolor = HeightWiseGradient.Evaluate(time);
 
-                        if (this.forceOneGroup)
-                        {
-                            Graph.GenerateBarWithAnimTypeTwo(j, 0, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor,
-                                animationSpeed, yMinValue, xMaxSize, barcolor);
-                        }
-                        else
-                        {
-                            Graph.GenerateBarWithAnimTypeTwo(j, i, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor,
-                                animationSpeed, yMinValue, xMaxSize, barcolor);
-                        }
+
+                        Graph.GenerateBarWithAnimTypeTwo(j, i, ListOfDataSet[i].ListOfBars[j].YValue, yscaleFactor,
+                            animationSpeed, yMinValue, xMaxSize, barcolor);
                     }
 
 
@@ -484,5 +463,3 @@ namespace BarGraph.VittorCloud
         #endregion
     }
 }
-
- 
