@@ -8,8 +8,31 @@ using Deedle;
 using Deedle.Internal;
 using Unity.VisualScripting;
 
+
 namespace _Scripts.DataLoader
 {
+    public enum eyeMovementTypeEnum
+    {
+        fixation,
+        saccade,
+        eyesNotFound,
+        movementUnclassified
+    }
+
+    public class GazeData
+    {
+        public int? x { get; set; }
+
+        public int? y { get; set; }
+
+        // public int time { get; set; } TODO
+        public eyeMovementTypeEnum type { get; set; }
+
+        public float seconds { get; set; }
+
+        public float? AOIHit { get; set; }
+    }
+
     public class ParticipantDataset
     {
         private Frame<int, string> _MetaDF;
@@ -31,29 +54,45 @@ namespace _Scripts.DataLoader
             this.ParticipantIDS = this._MetaDF["participantID"];
         }
 
-        public void FilterParticipants(IEnumerable<KeyValuePair<string, int>> filterDict)
+        public void FilterParticipants(Dictionary<string, int> filterDict)
         {
-            string[] allowedFilterKeys = { "drivingLicence", "age", "gender" };
+            string[] allowedFilterKeys = { "drivingLicense", "age", "gender", "navigationType" };
+
+            var metaDF = this._MetaDF.Clone();
+
+            Debug.Log("Columns");
+            Debug.Log(MetaDF.Columns);
 
             foreach (var key in allowedFilterKeys)
             {
                 foreach (var kvpFilters in filterDict)
                 {
-                    if (key == kvpFilters.Key)
+                    if (key == kvpFilters.Key.ToString())
                     {
-                        this._MetaDF = this._MetaDF.Where(
+                        metaDF = metaDF.Where(
                             kvp => kvp.Value.GetAs<int>(key) == kvpFilters.Value);
+                    }
+                    else
+                    {
+                        Debug.Log("Filter set up");
                     }
                 }
             }
 
-            this.ParticipantIDS = this._MetaDF["participantID"];
+            this.MetaDF = metaDF;
+            this.ParticipantIDS = this.MetaDF["participantID"];
+
+            Debug.Log("DS size");
+            Debug.Log(this.MetaDF.RowCount);
         }
 
         public void ResetFilters()
         {
             this.MetaDF = this._MetaDF.Clone();
         }
+
+
+        // Piecharts
 
         public IEnumerable<KeyValuePair<int, int>> GetGender()
         {
@@ -100,10 +139,12 @@ namespace _Scripts.DataLoader
             return dlDict;
         }
 
+        // Others
+
         public IEnumerable<KeyValuePair<string, string>> GetParticipantDetail(int participant_id)
         {
             string[] detailSelection = { "avgSpeed", "fixationCnt", "saccadeCnt" };
-            var row = this._MetaDF.GetRowAt<string>(participant_id);
+            var row = this.MetaDF.GetRowAt<string>(participant_id);
             var selectedRow = row[detailSelection];
             return selectedRow.Observations;
         }
@@ -113,14 +154,14 @@ namespace _Scripts.DataLoader
             // returns 
             // id, gameDuration, drivingLicence
             string[] attributeSelection = { "duration", "drivingLicense" };
-            var row = this._MetaDF.GetRowAt<string>(participant_id);
+            var row = this.MetaDF.GetRowAt<string>(participant_id);
             var selectedRow = row["duration"];
             return float.Parse(selectedRow);
         }
 
         public Dictionary<string, List<int>> GetParticipantsByAge()
         {
-            var age_col = this._MetaDF.Columns["age"];
+            var age_col = this.MetaDF.Columns["age"];
             var min_age = (int)age_col.Min();
             var max_age = (int)age_col.Max();
 
@@ -138,6 +179,15 @@ namespace _Scripts.DataLoader
             return dict;
         }
 
+        public IEnumerable<KeyValuePair<int, double>> GetParticipantAges()
+        {
+            var age_id = this.MetaDF["age"];
+            // KeyValuePair<string, OptionalValue<int>>
+            var ageIdDict = age_id.Observations;
+            return ageIdDict;
+        }
+
+
         // public IEnumerable<int> ParticipantSpeed(int participant_id)
         // {
         //     // TODO speed or speed of eyes
@@ -150,6 +200,42 @@ namespace _Scripts.DataLoader
 
             var aoiHitDF = Frame.ReadCsv(aoiPath);
             return aoiHitDF;
+        }
+
+        public List<GazeData> GetParticipantGaze(int participant_id)
+        {
+            string id_string = participant_id.ToString().PadLeft(3, '0');
+            string particPath = Path.Combine(this._dirPath, "Participant" + id_string + ".csv");
+
+            var partGaze = Frame.ReadCsv(particPath);
+            var rowCnt = partGaze.RowCount;
+
+            var types = partGaze.GetColumn<int>("eyeMovementType");
+            var xs = partGaze.GetColumn<int>("gazePointX");
+            var ys = partGaze.GetColumn<int>("gazePointY");
+            var seconds = partGaze.GetColumn<float>("timeElapsed");
+            var AOIHits = partGaze.GetColumn<int>("AOIHit");
+
+            Debug.Log("COUNT");
+            Debug.Log(AOIHits.ValueCount);
+
+
+            var GazeList = new List<GazeData>();
+
+            foreach (var i in Enumerable.Range(0, rowCnt))
+            {
+                var gaze = new GazeData()
+                {
+                    type = (eyeMovementTypeEnum)types.GetAt(i),
+                    x = xs.GetAt(i) == -1 ? null : xs.GetAt(i),
+                    y = ys.GetAt(i) == -1 ? null : ys.GetAt(i),
+                    seconds = seconds.GetAt(i),
+                    AOIHit = AOIHits.GetAt(i) == 2 ? null : AOIHits.GetAt(i)
+                };
+                GazeList.Add(gaze);
+            }
+
+            return GazeList;
         }
     }
 }

@@ -21,14 +21,21 @@ public class PieChartGenderDataLoadController : MonoBehaviour
     void Awake()
     {
         //data
-        Data.Add(53.0f);
-        dataDescription.Add("Male");
-        Data.Add(47.0f);
-        dataDescription.Add("Female");
-
-        //Color
-        customColors.Add(Color.blue);
-        customColors.Add(Color.red);
+        //data
+        foreach (var keyValuePair in participantDataset.GetGender())
+        {
+            Data.Add(keyValuePair.Value);
+            if (keyValuePair.Key == 0)
+            {
+                dataDescription.Add("Man");
+                customColors.Add(Color.blue);
+            }
+            else
+            {
+                dataDescription.Add("Woman");
+                customColors.Add(Color.red);
+            }
+        }
 
         //pocet kolko segmentob
         segment = Data.Count;
