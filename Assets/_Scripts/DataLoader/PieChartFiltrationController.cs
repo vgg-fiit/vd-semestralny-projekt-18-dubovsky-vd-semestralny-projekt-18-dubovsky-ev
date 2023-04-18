@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using BarGraph.VittorCloud;
+using _Scripts.DataLoader;
+using Palmmedia.ReportGenerator.Core.Reporting.Builders.Rendering;
+using static _Scripts.DataLoader.ParticipantDataset;
 
 public class PieChartFiltrationController : MonoBehaviour
 {
@@ -13,6 +17,9 @@ public class PieChartFiltrationController : MonoBehaviour
 
     private GameObject[] barGraphs;
     private GameObject[] scatterPlots;
+
+    private ParticipantDataset participantDataset = new();
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -21,14 +28,62 @@ public class PieChartFiltrationController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+    }
+
+    private Dictionary<string, int> ConvertFiltrationValues()
+    {
+        var dict = new Dictionary<string, int>();
+
+        if (StaticFiltrationController.gender.ToLower() == "male")
+        {
+            dict.Add("gender", 0);
+        }
+        else if (StaticFiltrationController.gender.ToLower() == "female")
+        {
+            dict.Add("gender", 1);
+        }
+
+        if (StaticFiltrationController.licence.ToLower() == "true")
+        {
+            dict.Add("drivingLicence", 1);
+        }
+        else if (StaticFiltrationController.licence.ToLower() == "false")
+        {
+            dict.Add("drivingLicence", 0);
+        }
+
+        if (StaticFiltrationController.navType.ToLower() == "arrows")
+        {
+            dict.Add("navigationType", 1);
+        }
+        else if (StaticFiltrationController.licence.ToLower() == "colorful")
+        {
+            dict.Add("drivingLicence", 0);
+        }
+
+        // TODO age
+
+        Debug.Log("DICT");
+        foreach (var kv in dict)
+        {
+            Debug.Log(kv.Key);
+            Debug.Log(kv.Value);
+        }
+
+        return dict;
     }
 
     public void PieChartFiltration()
+
     {
+        participantDataset.GetParticipantGaze(10);
+        
+        var filters = ConvertFiltrationValues();
+        this.participantDataset.FilterParticipants(filters);
+
         //ScatterPlot
         //data creation
-        ScatterPlotDataCreation();
+        newExampleDataSet = ScatterPlotDataCreation();
         //destroying old bargraphs
         scatterPlots = GameObject.FindGameObjectsWithTag("ScatterPlot");
 
@@ -47,11 +102,9 @@ public class PieChartFiltrationController : MonoBehaviour
         go_sc.GetComponent<ScatterPlotDataLoadController>().Press(newExampleDataSet);
 
 
-
-
         //BarGraph
         //data creation
-        BarGraphDataCreation();
+        newExampleDataSet = BarGraphDataCreation();
         //destroying old bargraphs
         barGraphs = GameObject.FindGameObjectsWithTag("BarGraph");
 
@@ -68,69 +121,57 @@ public class PieChartFiltrationController : MonoBehaviour
         StaticFiltrationController.newBarGraphExampleDataSet = newExampleDataSet;
         //sending new dataset to bargraph
         go.GetComponent<BarGraphDataLoadController>().Press(newExampleDataSet);
+
+        this.participantDataset.ResetFilters();
     }
 
 
     private List<BarGraphDataSet> ScatterPlotDataCreation()
     {
-
-        Debug.Log(StaticFiltrationController.gender);
-        Debug.Log(StaticFiltrationController.age);
-        Debug.Log(StaticFiltrationController.navType);
-        Debug.Log(StaticFiltrationController.licence);
+        int participant_cnt = this.participantDataset.ParticipantIDS.KeyCount;
+        int time_interval = 30; // seconds
 
         newExampleDataSet.Clear();
 
-        var xy1 = new XYBarValues
+        var pbe = participantDataset.GetParticipantsByAge();
+        int age_category_cnt = pbe.Count;
+        var age_categories = pbe.Keys.ToList();
+        var participant_ages = participantDataset.GetParticipantAges();
+
+        foreach (var par_age in participant_ages)
         {
-            XValue = "10-20",
-            YValue = 2,
-        };
+            var participant_age = (int)par_age.Value;
+            var participant_id = par_age.Key;
 
-        var xy2 = new XYBarValues
-        {
-            XValue = "20-30",
-            YValue = 2,
-        };
+            Debug.Log("Part age");
+            Debug.Log(participant_age);
 
-        var xy3 = new XYBarValues
-        {
-            XValue = "30-40",
-            YValue = 1,
-        };
+            newExampleDataSet.Add(new BarGraphDataSet());
+            newExampleDataSet.Last().ListOfBars = new List<XYBarValues>();
+            newExampleDataSet.Last().GroupName = "Participant" + participant_id.ToString();
 
-        //this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].ListOfBars.Add(xy1);
-        //this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].ListOfBars.Add(xy2);
-        //this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].ListOfBars.Add(xy3);
-        newExampleDataSet.Capacity = 4;
-
-        newExampleDataSet.Add(new BarGraphDataSet());
-        newExampleDataSet.Add(new BarGraphDataSet());
-        newExampleDataSet.Add(new BarGraphDataSet());
-        newExampleDataSet.Add(new BarGraphDataSet());
-
-        newExampleDataSet[0].ListOfBars = new List<XYBarValues>();
-        newExampleDataSet[1].ListOfBars = new List<XYBarValues>();
-        newExampleDataSet[2].ListOfBars = new List<XYBarValues>();
-        newExampleDataSet[3].ListOfBars = new List<XYBarValues>();
-        //bud tento sposob
-        newExampleDataSet[0].ListOfBars.Add(new XYBarValues
-        {
-            XValue = "31",
-            YValue = 3,
-        });
-        // alebo si to mozes vytvorit nanovo - v podstate to iste
-        newExampleDataSet[0].ListOfBars.Add(xy2);
-        newExampleDataSet[0].ListOfBars.Add(xy3);
-        newExampleDataSet[1].ListOfBars.Add(xy3);
-        newExampleDataSet[1].ListOfBars.Add(xy2);
-        newExampleDataSet[1].ListOfBars.Add(xy3);
-        newExampleDataSet[2].ListOfBars.Add(xy3);
-        newExampleDataSet[2].ListOfBars.Add(xy3);
-        newExampleDataSet[2].ListOfBars.Add(xy1);
-        newExampleDataSet[3].ListOfBars.Add(xy3);
-        newExampleDataSet[3].ListOfBars.Add(xy2);
-        newExampleDataSet[3].ListOfBars.Add(xy2);
+            foreach (var age_category in age_categories)
+            {
+                if (age_category == participant_age.ToString())
+                {
+                    var xy = new XYBarValues
+                    {
+                        XValue = age_category,
+                        YValue = participant_age,
+                    };
+                    newExampleDataSet.Last().ListOfBars.Add(xy);
+                }
+                else
+                {
+                    var xy = new XYBarValues
+                    {
+                        XValue = age_category,
+                        YValue = -1,
+                    };
+                    newExampleDataSet.Last().ListOfBars.Add(xy);
+                }
+            }
+        }
 
         return newExampleDataSet;
     }
@@ -138,59 +179,58 @@ public class PieChartFiltrationController : MonoBehaviour
 
     private List<BarGraphDataSet> BarGraphDataCreation()
     {
+        int time_interval = 30;
+        int participant_cnt = this.participantDataset.ParticipantIDS.KeyCount;
+        int max_time = 14;
+        int capacity = participant_cnt * max_time;
 
         newExampleDataSet.Clear();
+        newExampleDataSet.Capacity = capacity;
 
-        var xy1 = new XYBarValues
+        Debug.Log("Participant cnt");
+        Debug.Log(participant_cnt);
+
+        foreach (var i in Enumerable.Range(0, participant_cnt))
         {
-            XValue = "P1",
-            YValue = 1,
-        };
+            newExampleDataSet.Add(new BarGraphDataSet());
+            newExampleDataSet[i].GroupName = "Participant" + i.ToString();
+            newExampleDataSet[i].ListOfBars = new List<XYBarValues>();
 
-        var xy2 = new XYBarValues
-        {
-            XValue = "P2",
-            YValue = 3,
-        };
+            var aoihits = this.participantDataset.GetAOIHit(i);
 
-        var xy3 = new XYBarValues
-        {
-            XValue = "P3",
-            YValue = 1,
-        };
+            foreach (var j in Enumerable.Range(0, aoihits.RowCount))
+            {
+                var row = aoihits.GetRow<string>(j);
+                var row_obs = row.Observations;
+                var a = row.Values;
 
-        //this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].ListOfBars.Add(xy1);
-        //this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].ListOfBars.Add(xy2);
-        //this.transform.GetComponent<BarGraphExample>().exampleDataSet[0].ListOfBars.Add(xy3);
-        newExampleDataSet.Capacity = 4;
+                var time = time_interval * j;
 
-        newExampleDataSet.Add(new BarGraphDataSet());
-        newExampleDataSet.Add(new BarGraphDataSet());
-        newExampleDataSet.Add(new BarGraphDataSet());
-        newExampleDataSet.Add(new BarGraphDataSet());
+                var xy = new XYBarValues
+                {
+                    XValue = time.ToString(),
+                    YValue = int.Parse(row_obs.First().Value),
+                };
 
-        newExampleDataSet[0].ListOfBars = new List<XYBarValues>();
-        newExampleDataSet[1].ListOfBars = new List<XYBarValues>();
-        newExampleDataSet[2].ListOfBars = new List<XYBarValues>();
-        newExampleDataSet[3].ListOfBars = new List<XYBarValues>();
-        //bud tento sposob
-        newExampleDataSet[0].ListOfBars.Add(new XYBarValues
-        {
-            XValue = "31",
-            YValue = 3,
-        });
-        // alebo si to mozes vytvorit nanovo - v podstate to iste
-        newExampleDataSet[0].ListOfBars.Add(xy2);
-        newExampleDataSet[0].ListOfBars.Add(xy3);
-        newExampleDataSet[1].ListOfBars.Add(xy3);
-        newExampleDataSet[1].ListOfBars.Add(xy2);
-        newExampleDataSet[1].ListOfBars.Add(xy3);
-        newExampleDataSet[2].ListOfBars.Add(xy3);
-        newExampleDataSet[2].ListOfBars.Add(xy3);
-        newExampleDataSet[2].ListOfBars.Add(xy1);
-        newExampleDataSet[3].ListOfBars.Add(xy3);
-        newExampleDataSet[3].ListOfBars.Add(xy2);
-        newExampleDataSet[3].ListOfBars.Add(xy2);
+                newExampleDataSet[i].ListOfBars.Add(xy);
+            }
+
+
+            if (aoihits.RowCount < max_time)
+            {
+                foreach (var k in Enumerable.Range(aoihits.RowCount, max_time - aoihits.RowCount))
+                {
+                    var time = time_interval * k;
+                    var xy = new XYBarValues
+                    {
+                        XValue = time.ToString(),
+                        YValue = 0,
+                    };
+
+                    newExampleDataSet[i].ListOfBars.Add(xy);
+                }
+            }
+        }
 
         return newExampleDataSet;
     }

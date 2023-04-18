@@ -19,7 +19,7 @@ public class PieChartLicenceDataLoadController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        foreach (var keyValuePair in participantDataset.GetGender())
+        foreach (var keyValuePair in participantDataset.GetDrivingLicence())
         {
             Data.Add(keyValuePair.Value);
             if (keyValuePair.Key == 0)
