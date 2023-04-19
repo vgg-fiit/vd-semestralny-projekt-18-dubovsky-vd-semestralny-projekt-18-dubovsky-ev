@@ -34,11 +34,11 @@ public class PieChartFiltrationController : MonoBehaviour
     {
         var dict = new Dictionary<string, int>();
 
-        if (StaticFiltrationController.gender.ToLower() == "male")
+        if (StaticFiltrationController.gender.ToLower() == "man")
         {
             dict.Add("gender", 0);
         }
-        else if (StaticFiltrationController.gender.ToLower() == "female")
+        else if (StaticFiltrationController.gender.ToLower() == "woman")
         {
             dict.Add("gender", 1);
         }
@@ -56,12 +56,17 @@ public class PieChartFiltrationController : MonoBehaviour
         {
             dict.Add("navigationType", 1);
         }
-        else if (StaticFiltrationController.licence.ToLower() == "colorful")
+        else if (StaticFiltrationController.licence.ToLower() == "rectangles")
         {
-            dict.Add("drivingLicence", 0);
+            dict.Add("navigationType", 0);
         }
 
-        // TODO age
+        if (StaticFiltrationController.age != "all")
+        {
+            var age = int.Parse(StaticFiltrationController.age);
+            dict.Add("age", age);
+        }
+
 
         Debug.Log("DICT");
         foreach (var kv in dict)
@@ -77,7 +82,7 @@ public class PieChartFiltrationController : MonoBehaviour
 
     {
         participantDataset.GetParticipantGaze(10);
-        
+
         var filters = ConvertFiltrationValues();
         this.participantDataset.FilterParticipants(filters);
 

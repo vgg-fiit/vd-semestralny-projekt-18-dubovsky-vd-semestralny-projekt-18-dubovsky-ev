@@ -9,17 +9,17 @@ public class VisualisationBinderController : MonoBehaviour
 
     public GameObject cube1;
     public GameObject cube2;
+
     public GameObject cube3;
+
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     public void SpawnTorandoVisualisation(int i)
@@ -28,7 +28,7 @@ public class VisualisationBinderController : MonoBehaviour
         {
             spatialCube = cube1;
         }
-        else if (i==1)
+        else if (i == 1)
         {
             spatialCube = cube2;
         }
@@ -39,9 +39,8 @@ public class VisualisationBinderController : MonoBehaviour
 
         if (StaticFiltrationController.targetToShow != null)
         {
-            spatialCube.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = StaticFiltrationController.targetToShow.XValue + " " + StaticFiltrationController.targetToShow.YValue;
-
+            spatialCube.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0)
+                .GetComponent<TextMeshProUGUI>().text = "Participant " + StaticFiltrationController.targetToShow;
         }
-
     }
 }
