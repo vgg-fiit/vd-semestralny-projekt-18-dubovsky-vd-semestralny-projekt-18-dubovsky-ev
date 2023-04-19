@@ -19,7 +19,7 @@ namespace BarGraph.VittorCloud
         public Action<GameObject> PointerUpOnBar;
         public Action<GameObject> PointerEnterOnBar;
         public Action<GameObject> PointerExitOnBar;
-        
+
         public GameObject UIInfo;
 
         private GameObject player;
@@ -32,6 +32,7 @@ namespace BarGraph.VittorCloud
         #region PrivateVariables
 
         GameObject bar;
+
         #endregion
 
         #region UnityCallBacks
@@ -41,10 +42,10 @@ namespace BarGraph.VittorCloud
             bar = transform.parent.gameObject;
             player = GameObject.FindGameObjectsWithTag("MainCamera")[0];
         }
+
         // Start is called before the first frame update
         void Start()
         {
-
             barScale = transform.localScale;
             outline.enabled = false;
 
@@ -54,46 +55,53 @@ namespace BarGraph.VittorCloud
         }
 
 
-
         #region UnityMouseEvents
+
         public void OnMouseDown()
         {
             transform.localScale = transform.localScale + new Vector3(0.15f, 0, 0.15f);
 
             //GameObject UI = Instantiate(UIInfo, this.transform.position, Quaternion.identity);
             int index = int.Parse(bar.transform.parent.name);
-            int indexBar = (bar.transform.GetSiblingIndex() + 1)/ 2;
+            int indexBar = (bar.transform.GetSiblingIndex() + 1) / 2;
 
-            uiInfo.transform.GetChild(0).transform.GetChild(0).transform.GetComponent<TextMeshProUGUI>().text = "Index: " + (bar.transform.GetSiblingIndex()+1)/2 + ", value: " + bar.transform.GetComponent<BarProperty>().BarLabel.text + "\n" +
-                "row: " + bar.transform.parent.name;
-            
             //asi by malo ist
-            var target = StaticFiltrationController.newBarGraphExampleDataSet[index].ListOfBars[indexBar];
-            StaticFiltrationController.targetToShow = target;
+            var target_str = StaticFiltrationController.newBarGraphExampleDataSet[index].GroupName;
+            target_str = target_str.Remove(0, 11);
+            var target_int = int.Parse(target_str);
+
+            uiInfo.transform.GetChild(0).transform.GetChild(0).transform.GetComponent<TextMeshProUGUI>().text =
+                "Index: " + (bar.transform.GetSiblingIndex() + 1) / 2 + ", value: " +
+                bar.transform.GetComponent<BarProperty>().BarLabel.text + "\n" +
+                "row: " + bar.transform.parent.name + ", participant: " + target_int;
+
+            StaticFiltrationController.targetToShow = target_int;
 
             outline.enabled = true;
             PointerDownOnBar(bar);
-
-
         }
+
         public void OnMouseUp()
         {
             transform.localScale = barScale;
             outline.enabled = false;
             PointerUpOnBar(bar);
         }
+
         public void OnMouseEnter()
         {
-            uiInfoToolTip.transform.position = this.transform.position + new Vector3(0, ((bar.transform.localScale.y) / 2) + 2, -1);
+            uiInfoToolTip.transform.position =
+                this.transform.position + new Vector3(0, ((bar.transform.localScale.y) / 2) + 2, -1);
             Debug.Log(bar.transform.name);
-            uiInfoToolTip.transform.GetChild(0).transform.GetChild(0).transform.GetComponent<TextMeshProUGUI>().text = bar.transform.name + "\n with value:" + bar.transform.GetComponent<BarProperty>().BarLabel.text;
+            uiInfoToolTip.transform.GetChild(0).transform.GetChild(0).transform.GetComponent<TextMeshProUGUI>().text =
+                bar.transform.name + "\n with value:" + bar.transform.GetComponent<BarProperty>().BarLabel.text;
             uiInfoToolTip.SetActive(true);
 
             transform.localScale = transform.localScale + new Vector3(0.15f, 0, 0.15f);
             PointerEnterOnBar(bar);
             // outline.enabled = true;
-
         }
+
         public void OnMouseExit()
         {
             uiInfoToolTip.SetActive(false);
@@ -101,6 +109,7 @@ namespace BarGraph.VittorCloud
             outline.enabled = false;
             PointerExitOnBar(bar);
         }
+
         #endregion
 
         #endregion
