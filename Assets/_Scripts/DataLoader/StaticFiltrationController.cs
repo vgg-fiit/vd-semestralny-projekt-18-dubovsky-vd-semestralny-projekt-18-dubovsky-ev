@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using BarGraph.VittorCloud;
 
@@ -14,137 +15,50 @@ public static class StaticFiltrationController
     public static List<BarGraphDataSet> newScatterPlotExampleDataSet = new List<BarGraphDataSet>();
 
     // toto musi byt vlastneho typu nejake struct alebo class - proste s informaciami o tom pozuivatelovi
-    public static XYBarValues targetToShow;
+    public static int? targetToShow;
 
 
     public static void ChangeFiltration(string variable)
     {
-        Debug.Log(variable);
-        switch (variable)
+        string[] gender_lst = { "man", "woman" };
+        string[] licence_lst = { "true", "false" };
+        string[] navtype_lst = { "rectangles", "arrows" };
+
+        var variable_lower = variable.ToLower();
+
+        if (gender_lst.Contains(variable_lower))
         {
-            case "Male":
-                if (gender == "male")
-                {
-                    gender = "all";
-                }
-                else
-                {
-                    gender = "male";
-                }
-                break;
-            case "Female":
-                if (gender == "female")
-                {
-                    gender = "all";
-                }
-                else
-                {
-                    gender = "female";
-                }
-                break;
-            case "20":
-                if (gender == "20")
-                {
-                    age = "all";
-                }
-                else
-                {
-                    age = "20";
-                }
-                break;
-            case "21":
-                if (gender == "21")
-                {
-                    age = "all";
-                }
-                else
-                {
-                    age = "21";
-                }
-                break;
-            case "22":
-                if (gender == "22")
-                {
-                    age = "all";
-                }
-                else
-                {
-                    age = "22";
-                }
-                break;
-            case "23":
-                if (gender == "23")
-                {
-                    age = "all";
-                }
-                else
-                {
-                    age = "23";
-                }
-                break;
-            case "24":
-                if (gender == "24")
-                {
-                    age = "all";
-                }
-                else
-                {
-                    age = "24";
-                }
-                break;
-            case "30":
-                if (gender == "30")
-                {
-                    age = "all";
-                }
-                else
-                {
-                    age = "30";
-                }
-                break;
-            case "True":
-                if (licence == "true")
-                {
-                    licence = "all";
-                }
-                else
-                {
-                    licence = "true";
-                }
-                break;
-            case "False":
-                if (licence == "false")
-                {
-                    licence = "all";
-                }
-                else
-                {
-                    licence = "false";
-                }
-                break;
-            case "Colorful":
-                if (navType == "colorful")
-                {
-                    navType = "all";
-                }
-                else
-                {
-                    navType = "colorful";
-                }
-                break;
-            case "Arrows":
-                if (navType == "arrows")
-                {
-                    navType = "all";
-                }
-                else
-                {
-                    navType = "arrows";
-                }
-                break;
-            default:
-                // code block
-                break;
+            if (gender == variable_lower)
+                gender = "all";
+            else
+                gender = variable_lower;
+        }
+
+        else if (licence_lst.Contains(variable_lower))
+        {
+            if (licence == variable_lower)
+                licence = "all";
+            else
+                licence = variable_lower;
+        }
+
+        else if (navtype_lst.Contains(variable_lower))
+        {
+            if (navType == variable_lower)
+                navType = "all";
+            else
+            {
+                navType = variable_lower;
+            }
+        }
+        else
+        {
+            if (age == variable_lower)
+                age = "all";
+            else
+            {
+                age = variable_lower;
+            }
         }
     }
 }
