@@ -224,10 +224,10 @@ namespace _Scripts.DataLoader
                 var gaze = new GazeData()
                 {
                     type = (eyeMovementTypeEnum)types.GetAt(i),
-                    x = xs.GetAt(i) == -1 ? null : xs.GetAt(i),
-                    y = ys.GetAt(i) == -1 ? null : ys.GetAt(i),
+                    x = xs.GetAt(i),
+                    y = ys.GetAt(i),
                     seconds = seconds.GetAt(i),
-                    AOIHit = AOIHits.GetAt(i) == 2 ? null : AOIHits.GetAt(i)
+                    AOIHit = AOIHits.GetAt(i)
                 };
                 GazeList.Add(gaze);
             }
