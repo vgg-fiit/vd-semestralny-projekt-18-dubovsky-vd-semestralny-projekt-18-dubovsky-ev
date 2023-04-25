@@ -8,6 +8,7 @@ public class TornadoController : MonoBehaviour
     // Start is called before the first frame update
     public GameObject sphere;
     public GameObject sphereAOI;
+    public GameObject sphereAOINone;
 
     public GameObject cube1;
     public GameObject cube2;
@@ -45,20 +46,7 @@ public class TornadoController : MonoBehaviour
 
     public void StartVisualisation(){
 
-        if (inCube == 0)
-        {
-            _cube = cube1;
-        }
-        else if (inCube == 1)
-        {
-            _cube = cube2;
-        }
-        else if (inCube == 2)
-        {
-            _cube = cube3;
-        }
-
-
+        _cube = this.transform.parent.gameObject;
         _cube.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().url = "./Assets/Videos/Participant"+ (StaticFiltrationController.targetToShow + 1) +"-converted.mp4";
         //Debug.Log(_cube.transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().url);
 
@@ -80,7 +68,11 @@ public class TornadoController : MonoBehaviour
                 }
                 else if (item.AOIHit == -1)
                 {
-                    _sphere = GameObject.Instantiate(sphere, new Vector3(0, 0, 0), transform.rotation);
+                    _sphere = GameObject.Instantiate(sphereAOINone, new Vector3(0, 0, 0), transform.rotation);
+                }
+                else if (item.AOIHit == 2)
+                {
+                    _sphere = GameObject.Instantiate(sphereAOINone, new Vector3(0, 0, 0), transform.rotation);
                 }
                 _sphere.transform.rotation = Quaternion.Euler(0, 0, 90);
                 _sphere.transform.parent = _cube.transform;
