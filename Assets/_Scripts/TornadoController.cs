@@ -48,7 +48,7 @@ public class TornadoController : MonoBehaviour
 
         _cube = this.transform.parent.gameObject;
         _cube.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().url = "./Assets/Videos/Participant"+ (StaticFiltrationController.targetToShow + 1) +"-converted.mp4";
-        //Debug.Log(_cube.transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().url);
+        Debug.Log(_cube.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().url);
 
 
         rp = new RenderParams(material);
