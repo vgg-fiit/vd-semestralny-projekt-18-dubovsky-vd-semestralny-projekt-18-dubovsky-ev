@@ -215,10 +215,7 @@ namespace _Scripts.DataLoader
             var ys = partGaze.GetColumn<int>("gazePointY");
             var seconds = partGaze.GetColumn<float>("timeElapsed");
             var AOIHits = partGaze.GetColumn<int>("AOIHit");
-
-            Debug.Log("COUNT");
-            Debug.Log(AOIHits.ValueCount);
-
+            
 
             var GazeList = new List<GazeData>();
 
