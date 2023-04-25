@@ -229,7 +229,7 @@ public class PieChartFiltrationController : MonoBehaviour
                     var xy = new XYBarValues
                     {
                         XValue = time.ToString(),
-                        YValue = 0,
+                        YValue = -1,
                     };
 
                     newExampleDataSet[i].ListOfBars.Add(xy);
