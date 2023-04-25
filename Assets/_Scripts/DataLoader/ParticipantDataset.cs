@@ -216,7 +216,6 @@ namespace _Scripts.DataLoader
             var seconds = partGaze.GetColumn<float>("timeElapsed");
             var AOIHits = partGaze.GetColumn<int>("AOIHit");
             
-
             var GazeList = new List<GazeData>();
 
             foreach (var i in Enumerable.Range(0, rowCnt))

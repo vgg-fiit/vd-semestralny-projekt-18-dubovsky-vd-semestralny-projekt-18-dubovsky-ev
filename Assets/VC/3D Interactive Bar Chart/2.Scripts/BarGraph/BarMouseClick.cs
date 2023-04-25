@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Globalization;
+using System.Linq;
+using _Scripts.DataLoader;
 
 namespace BarGraph.VittorCloud
 {
@@ -88,18 +90,39 @@ namespace BarGraph.VittorCloud
             PointerUpOnBar(bar);
         }
 
+        // hover
         public void OnMouseEnter()
         {
-            uiInfoToolTip.transform.position =
-                this.transform.position + new Vector3(0, ((bar.transform.localScale.y) / 2) + 2, -1);
-            Debug.Log(bar.transform.name);
-            uiInfoToolTip.transform.GetChild(0).transform.GetChild(0).transform.GetComponent<TextMeshProUGUI>().text =
-                bar.transform.name + "\n with value:" + bar.transform.GetComponent<BarProperty>().BarLabel.text;
-            uiInfoToolTip.SetActive(true);
+            Debug.Log("Parent search");
+            if (this.transform.parent.parent.parent.parent.parent.name.StartsWith("Scatter"))
+            {
+                var pariticipant_id = int.Parse(bar.transform.parent.name);
 
-            transform.localScale = transform.localScale + new Vector3(0.15f, 0, 0.15f);
-            PointerEnterOnBar(bar);
-            // outline.enabled = true;
+                var pd = new ParticipantDataset();
+                var info = pd.GetParticipantDetail(pariticipant_id);
+
+                var text = "";
+                string[] new_keys = { "Fixation count", "Saccade Count" };
+
+                foreach (var i in Enumerable.Range(0, 2))
+                {
+                    text = text + new_keys[i] + ": ";
+                    text = text + info.ElementAt(i).Value + "\n";
+                }
+
+                uiInfoToolTip.transform.position =
+                    this.transform.position + new Vector3(0, ((bar.transform.localScale.y) / 2) + 2, -1);
+
+                uiInfoToolTip.transform.GetChild(0).transform.GetChild(0).transform.GetComponent<TextMeshProUGUI>()
+                    .text = text;
+                // bar.transform.name + "\n with value:" + bar.transform.GetComponent<BarProperty>().BarLabel.text;
+
+
+                uiInfoToolTip.SetActive(true);
+
+                transform.localScale = transform.localScale + new Vector3(0.15f, 0, 0.15f);
+                PointerEnterOnBar(bar);
+            }
         }
 
         public void OnMouseExit()
