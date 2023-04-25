@@ -165,7 +165,7 @@ namespace BarGraph.VittorCloud
         public void GenerateBarWithAnimTypeTwo(int xIndex, int zIndex, float yValue, float scaleFactor, float animSpeed,
             int ymin, int xMax, Color barColor)
         {
-            if (yValue <= 0)
+            if (yValue < 0)
                 return;
 
             if (barRef == null)

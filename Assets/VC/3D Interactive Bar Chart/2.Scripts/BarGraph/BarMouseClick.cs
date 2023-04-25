@@ -115,8 +115,6 @@ namespace BarGraph.VittorCloud
 
                 uiInfoToolTip.transform.GetChild(0).transform.GetChild(0).transform.GetComponent<TextMeshProUGUI>()
                     .text = text;
-                // bar.transform.name + "\n with value:" + bar.transform.GetComponent<BarProperty>().BarLabel.text;
-
 
                 uiInfoToolTip.SetActive(true);
 
