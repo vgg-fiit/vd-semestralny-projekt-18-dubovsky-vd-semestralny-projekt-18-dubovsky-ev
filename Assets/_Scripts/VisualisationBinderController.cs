@@ -39,8 +39,9 @@ public class VisualisationBinderController : MonoBehaviour
 
         if (StaticFiltrationController.targetToShow != null)
         {
-            spatialCube.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0)
-                .GetComponent<TextMeshProUGUI>().text = "Participant " + StaticFiltrationController.targetToShow;
+            //spatialCube.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Participant " + StaticFiltrationController.targetToShow;
+            spatialCube.transform.GetChild(0).transform.GetComponent<TornadoController>().StartVisualisation();
+            
         }
     }
 }
