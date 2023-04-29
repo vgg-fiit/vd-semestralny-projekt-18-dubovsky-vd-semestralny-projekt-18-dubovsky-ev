@@ -1,5 +1,5 @@
 speed,keyDown,keyUp,keyLeft,keyRight,timestamp,gazePointX,gazePointY,AOIHit,posX,posY,posZ,fixation,saccade,eyesNotFound,movementUnclassified,navigationLeft,navigationRight,navigationForward,eyeMovementType,timeElapsed,fixationSize
-4.0,False,False,False,False,1900-01-01 14:28:44.450,,,2.0,-117.1021728515625,-10.360128402709961,167.44049072265625,False,False,True,False,False,False,False,2,0.0,1
+4.0,False,False,False,False,1900-01-01 14:28:44.450,0.0,0.0,2.0,-117.1021728515625,-10.360128402709961,167.44049072265625,False,False,True,False,False,False,False,2,0.0,1
 4.0,False,False,False,False,1900-01-01 14:28:44.460,519.0,898.0,2.0,-117.07926940917969,-10.360143661499023,167.44049072265625,False,False,False,True,False,False,False,3,0.01,1
 5.0,False,False,False,False,1900-01-01 14:28:44.480,520.0,893.0,2.0,-117.05561065673828,-10.360156059265137,167.4404754638672,False,False,False,True,False,False,False,3,0.03,1
 5.0,False,False,False,False,1900-01-01 14:28:44.500,524.0,891.0,2.0,-117.03142547607422,-10.360154151916504,167.44044494628906,False,False,False,True,False,False,False,3,0.05,1
