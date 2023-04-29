@@ -24,13 +24,14 @@ namespace _Scripts.DataLoader
         public int? x { get; set; }
 
         public int? y { get; set; }
-
-        // public int time { get; set; } TODO
+        
         public eyeMovementTypeEnum type { get; set; }
 
         public float seconds { get; set; }
 
         public float? AOIHit { get; set; }
+
+        public int fixationSize { get; set; }
     }
 
     public class ParticipantDataset
@@ -215,6 +216,7 @@ namespace _Scripts.DataLoader
             var ys = partGaze.GetColumn<int>("gazePointY");
             var seconds = partGaze.GetColumn<float>("timeElapsed");
             var AOIHits = partGaze.GetColumn<int>("AOIHit");
+            var fixationSize = partGaze.GetColumn<int>("fixationSize");
 
             var GazeList = new List<GazeData>();
 
@@ -226,7 +228,8 @@ namespace _Scripts.DataLoader
                     x = xs.GetAt(i),
                     y = ys.GetAt(i),
                     seconds = seconds.GetAt(i),
-                    AOIHit = AOIHits.GetAt(i)
+                    AOIHit = AOIHits.GetAt(i),
+                    fixationSize = fixationSize.GetAt(i)
                 };
                 GazeList.Add(gaze);
             }
