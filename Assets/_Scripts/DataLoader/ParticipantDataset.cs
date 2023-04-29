@@ -24,7 +24,7 @@ namespace _Scripts.DataLoader
         public int? x { get; set; }
 
         public int? y { get; set; }
-        
+
         public eyeMovementTypeEnum type { get; set; }
 
         public float seconds { get; set; }
@@ -61,8 +61,8 @@ namespace _Scripts.DataLoader
 
             var metaDF = this._MetaDF.Clone();
 
-            Debug.Log("Columns");
-            Debug.Log(MetaDF.Columns);
+            // Debug.Log("Columns");
+            // Debug.Log(MetaDF.Columns);
 
             foreach (var key in allowedFilterKeys)
             {
@@ -75,7 +75,7 @@ namespace _Scripts.DataLoader
                     }
                     else
                     {
-                        Debug.Log("Filter set up");
+                        // Debug.Log("Filter set up");
                     }
                 }
             }
@@ -83,8 +83,8 @@ namespace _Scripts.DataLoader
             this.MetaDF = metaDF;
             this.ParticipantIDS = this.MetaDF["participantID"];
 
-            Debug.Log("DS size");
-            Debug.Log(this.MetaDF.RowCount);
+            // Debug.Log("DS size");
+            // Debug.Log(this.MetaDF.RowCount);
         }
 
         public void ResetFilters()
@@ -189,11 +189,6 @@ namespace _Scripts.DataLoader
         }
 
 
-        // public IEnumerable<int> ParticipantSpeed(int participant_id)
-        // {
-        //     // TODO speed or speed of eyes
-        // }
-
         public Frame<int, string> GetAOIHit(int participant_id)
         {
             string id_string = participant_id.ToString().PadLeft(3, '0');
@@ -201,6 +196,13 @@ namespace _Scripts.DataLoader
 
             var aoiHitDF = Frame.ReadCsv(aoiPath);
             return aoiHitDF;
+        }
+
+        public double GetVideoOffset(int participatn_id)
+        {
+            var offsets = this.MetaDF["videoOffset"];
+            double offset = offsets.GetAt(participatn_id);
+            return offset;
         }
 
         public List<GazeData> GetParticipantGaze(int participant_id)
@@ -211,6 +213,8 @@ namespace _Scripts.DataLoader
             var partGaze = Frame.ReadCsv(particPath);
             var rowCnt = partGaze.RowCount;
 
+            Debug.Log("GP starting");
+
             var types = partGaze.GetColumn<int>("eyeMovementType");
             var xs = partGaze.GetColumn<int>("gazePointX");
             var ys = partGaze.GetColumn<int>("gazePointY");
@@ -218,7 +222,20 @@ namespace _Scripts.DataLoader
             var AOIHits = partGaze.GetColumn<int>("AOIHit");
             var fixationSize = partGaze.GetColumn<int>("fixationSize");
 
+            // x, y, 
+
             var GazeList = new List<GazeData>();
+
+            Debug.Log("GP columns loaded");
+
+            Debug.Log("GP lens: "
+                      + rowCnt + " "
+                      + types.ValueCount + " "
+                      + xs.ValueCount + " "
+                      + ys.ValueCount + " "
+                      + seconds.ValueCount + " "
+                      + AOIHits.ValueCount + " "
+                      + fixationSize.ValueCount + " ");
 
             foreach (var i in Enumerable.Range(0, rowCnt))
             {
@@ -232,6 +249,8 @@ namespace _Scripts.DataLoader
                     fixationSize = fixationSize.GetAt(i)
                 };
                 GazeList.Add(gaze);
+
+                Debug.Log("GP " + i);
             }
 
             return GazeList;
