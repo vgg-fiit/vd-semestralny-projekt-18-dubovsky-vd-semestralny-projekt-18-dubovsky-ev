@@ -7814,36 +7814,48 @@ MonoBehaviour:
     ListOfBars:
     - XValue: 32
       YValue: 32
+      navType: 0
     - XValue: 12
       YValue: 32
+      navType: 0
     - XValue: 54
       YValue: 32
+      navType: 0
     - XValue: 21
       YValue: 32
+      navType: 0
   - GroupName: Product2
     barColor: {r: 1, g: 0.6292705, b: 0, a: 0}
     barMaterial: {fileID: 0}
     ListOfBars:
     - XValue: 32
       YValue: 60
+      navType: 0
     - XValue: 40
       YValue: 53
+      navType: 0
     - XValue: 10
       YValue: 23
+      navType: 0
     - XValue: 12
       YValue: 20
+      navType: 0
   - GroupName: Product3
     barColor: {r: 0, g: 0.8794131, b: 1, a: 0}
     barMaterial: {fileID: 0}
     ListOfBars:
     - XValue: 20
       YValue: 23
+      navType: 0
     - XValue: 40
       YValue: 20
+      navType: 0
     - XValue: 43
       YValue: 30
+      navType: 0
     - XValue: 23
       YValue: 70
+      navType: 0
 --- !u!114 &1851582178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9700,7 +9712,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7049245959436630977, guid: bab2c6789e3352e44ad4d2c825a49fd1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -57.8
+      value: -64.5
       objectReference: {fileID: 0}
     - target: {fileID: 7049245959436630977, guid: bab2c6789e3352e44ad4d2c825a49fd1, type: 3}
       propertyPath: m_LocalPosition.y

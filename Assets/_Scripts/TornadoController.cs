@@ -120,7 +120,7 @@ public class TornadoController : MonoBehaviour
         cube.transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().Play();
         Debug.Log((percent) + "PERCENT");
         Debug.Log((float)((wholeDistance / 100) * (percent * 100)) + "PRETOCENIE");
-        cube.transform.localPosition = new Vector3(20 + _cube.transform.position.x - (float)((wholeDistance / 100) * (percent * 100)), cube.transform.localPosition.y, cube.transform.localPosition.z);
+        cube.transform.localPosition = new Vector3(_cube.transform.position.x - (float)((wholeDistance / 100) * (percent * 100)), cube.transform.localPosition.y, cube.transform.localPosition.z);
         //Camera.main.transform.position = new Vector3(_cube.transform.localPosition.x - 20, _cube.transform.localPosition.y + 5, _cube.transform.localPosition.z);
         foreach (var item in data)
         {
