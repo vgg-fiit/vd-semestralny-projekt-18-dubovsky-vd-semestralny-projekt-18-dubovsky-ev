@@ -68,12 +68,12 @@ public class PieChartFiltrationController : MonoBehaviour
         }
 
 
-        Debug.Log("DICT");
-        foreach (var kv in dict)
-        {
-            Debug.Log(kv.Key);
-            Debug.Log(kv.Value);
-        }
+        // Debug.Log("DICT");
+        // foreach (var kv in dict)
+        // {
+        //     Debug.Log(kv.Key);
+        //     Debug.Log(kv.Value);
+        // }
 
         return dict;
     }
@@ -148,8 +148,8 @@ public class PieChartFiltrationController : MonoBehaviour
             var participant_age = (int)par_age.Value;
             var participant_id = par_age.Key;
 
-            Debug.Log("Part age");
-            Debug.Log(participant_age);
+            // Debug.Log("Part age");
+            // Debug.Log(participant_age);
 
             newExampleDataSet.Add(new BarGraphDataSet());
             newExampleDataSet.Last().ListOfBars = new List<XYBarValues>();
@@ -191,9 +191,9 @@ public class PieChartFiltrationController : MonoBehaviour
 
         newExampleDataSet.Clear();
         newExampleDataSet.Capacity = capacity;
-
-        Debug.Log("Participant cnt");
-        Debug.Log(participant_cnt);
+        //
+        // Debug.Log("Participant cnt");
+        // Debug.Log(participant_cnt);
 
         foreach (var i in Enumerable.Range(0, participant_cnt))
         {
