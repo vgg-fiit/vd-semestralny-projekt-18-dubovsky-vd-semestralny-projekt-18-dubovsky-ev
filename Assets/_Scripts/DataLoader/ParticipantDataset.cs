@@ -266,7 +266,7 @@ namespace _Scripts.DataLoader
                 };
                 GazeList.Add(gaze);
 
-                Debug.Log("GP " + i);
+                //Debug.Log("GP " + i);
             }
 
             return GazeList;

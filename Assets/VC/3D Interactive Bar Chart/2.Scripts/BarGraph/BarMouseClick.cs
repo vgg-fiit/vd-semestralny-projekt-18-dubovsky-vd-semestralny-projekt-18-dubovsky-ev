@@ -93,6 +93,8 @@ namespace BarGraph.VittorCloud
         // hover
         public void OnMouseEnter()
         {
+            Cursor.SetCursor(StaticFiltrationController.cursor, Vector2.zero, CursorMode.Auto);
+
             Debug.Log("Parent search");
             if (this.transform.parent.parent.parent.parent.parent.name.StartsWith("Scatter"))
             {
