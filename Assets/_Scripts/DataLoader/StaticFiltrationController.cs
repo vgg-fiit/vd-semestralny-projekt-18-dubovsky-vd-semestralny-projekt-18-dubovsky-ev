@@ -11,6 +11,8 @@ public static class StaticFiltrationController
     public static string age = "all";
     public static string licence = "all";
 
+    public static Material sphereMaterial;
+
     public static List<BarGraphDataSet> newBarGraphExampleDataSet = new List<BarGraphDataSet>();
     public static List<BarGraphDataSet> newScatterPlotExampleDataSet = new List<BarGraphDataSet>();
 

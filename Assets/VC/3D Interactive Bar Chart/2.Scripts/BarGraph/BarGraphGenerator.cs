@@ -51,6 +51,7 @@ namespace BarGraph.VittorCloud
     {
         public string XValue; //xvalue
         public float YValue = 0; // yvalue
+        public bool navType = false;
     }
 
     public class BarGraphGenerator : MonoBehaviour

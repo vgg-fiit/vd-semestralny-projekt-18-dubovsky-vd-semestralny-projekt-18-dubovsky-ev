@@ -163,6 +163,7 @@ public class PieChartFiltrationController : MonoBehaviour
                     {
                         XValue = age_category,
                         YValue = participant_age,
+                        navType = false,
                     };
                     newExampleDataSet.Last().ListOfBars.Add(xy);
                 }

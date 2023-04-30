@@ -38,13 +38,11 @@ public class VideoPlayerEditorController : MonoBehaviour, IDragHandler, IPointer
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log("drag");
         TrySkip(eventData);
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("click");
         TrySkip(eventData);
     }
 
@@ -62,6 +60,7 @@ public class VideoPlayerEditorController : MonoBehaviour, IDragHandler, IPointer
     private void SkipToPercent(float pct)
     {
         var frame = videoPlayer.frameCount * pct;
+        videoPlayer.transform.parent.transform.parent.GetComponent<TornadoController>().VideoClick(pct);
         videoPlayer.frame = (long)frame;
     }
 }

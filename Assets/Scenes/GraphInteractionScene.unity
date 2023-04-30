@@ -2595,7 +2595,7 @@ VideoPlayer:
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: 6f25616d5aebb05479ff08da7b5277d4, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 72738854ff09e2342b8b04e6491a6150, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
@@ -4113,7 +4113,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 76f2ef89e0820884ea912af39d1dec34, type: 2}
+  - {fileID: 2100000, guid: 92f1721369275dc449898e3ec7468e2c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4445,7 +4445,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 76f2ef89e0820884ea912af39d1dec34, type: 2}
+  - {fileID: 2100000, guid: 3d4a889a8b8f56448b4df8cc6c47c94c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5351,7 +5351,7 @@ VideoPlayer:
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: 6f25616d5aebb05479ff08da7b5277d4, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: a3ab6af1a4628804bb66b31055fd13d6, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
