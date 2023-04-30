@@ -7,8 +7,10 @@ public class TornadoController : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject sphere;
+    public GameObject sphereDiff;
     public GameObject sphereAOI;
     public GameObject sphereAOINone;
+    public GameObject sphereAOINoneDiff;
 
     public GameObject cube1;
     public GameObject cube2;
@@ -66,14 +68,12 @@ public class TornadoController : MonoBehaviour
 
         _cube = this.transform.parent.gameObject;
         _cube.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().url = "./Assets/Videos/Participant"+ (StaticFiltrationController.targetToShow + 1) +"-converted.mp4";
-
         //Debug.Log(_cube.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().url);
 
 
         rp = new RenderParams(material);
         participantData = participantDataset.GetParticipantGaze((int)StaticFiltrationController.targetToShow);
         videoOffset = participantDataset.GetVideoOffset((int)StaticFiltrationController.targetToShow);
-
 
         i = 0;
         foreach (var item in participantData)
@@ -87,11 +87,25 @@ public class TornadoController : MonoBehaviour
                 }
                 else if (item.AOIHit == 0)
                 {
-                    _sphere = GameObject.Instantiate(sphere, new Vector3(0, 0, 0), transform.rotation);
+                    if (item.fixationSize != 100)
+                    {
+                        _sphere = GameObject.Instantiate(sphere, new Vector3(0, 0, 0), transform.rotation);
+                    }
+                    else
+                    {
+                        _sphere = GameObject.Instantiate(sphereDiff, new Vector3(0, 0, 0), transform.rotation);
+                    }
                 }
                 else if (item.AOIHit == -1)
                 {
-                    _sphere = GameObject.Instantiate(sphereAOINone, new Vector3(0, 0, 0), transform.rotation);
+                    if (item.fixationSize != 100)
+                    {
+                        _sphere = GameObject.Instantiate(sphereAOINone, new Vector3(0, 0, 0), transform.rotation);
+                    }
+                    else
+                    {
+                        _sphere = GameObject.Instantiate(sphereAOINoneDiff, new Vector3(0, 0, 0), transform.rotation);
+                    }
                 }
                 else if (item.AOIHit == 2)
                 {
@@ -118,6 +132,9 @@ public class TornadoController : MonoBehaviour
             x_pos = item.seconds;
             i++;
         }
+
+        _cube.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().Pause();
+
 
         wholeDistance = firstCircle - lastCircle;
 

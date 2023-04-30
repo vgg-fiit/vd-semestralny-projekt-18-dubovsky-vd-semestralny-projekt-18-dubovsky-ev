@@ -72,10 +72,7 @@ namespace BarGraph.VittorCloud
             target_str = target_str.Remove(0, 11);
             var target_int = int.Parse(target_str);
 
-            uiInfo.transform.GetChild(0).transform.GetChild(0).transform.GetComponent<TextMeshProUGUI>().text =
-                "Index: " + (bar.transform.GetSiblingIndex() + 1) / 2 + ", value: " +
-                bar.transform.GetComponent<BarProperty>().BarLabel.text + "\n" +
-                "row: " + bar.transform.parent.name + ", participant: " + target_int;
+            uiInfo.transform.GetChild(0).transform.GetChild(0).transform.GetComponent<TextMeshProUGUI>().text = "Participant: " + target_int;
 
             StaticFiltrationController.targetToShow = target_int;
 

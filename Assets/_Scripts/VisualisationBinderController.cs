@@ -45,6 +45,9 @@ public class VisualisationBinderController : MonoBehaviour
             button = button3;
         }
 
+        StaticFiltrationController.cameraStaticSpatialCubeLastCube = spatialCube;
+        StaticFiltrationController.cameraStaticSpatialCube = true;
+
         if (StaticFiltrationController.targetToShow != null)
         {
             //spatialCube.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = "Participant " + StaticFiltrationController.targetToShow;
