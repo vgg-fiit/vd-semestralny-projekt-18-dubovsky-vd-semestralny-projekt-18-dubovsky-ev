@@ -188,6 +188,22 @@ namespace _Scripts.DataLoader
             return ageIdDict;
         }
 
+        public Dictionary<int, double> GetParticipantNavigations()
+        {
+            var nav_id = this.MetaDF["navigationType"];
+            // KeyValuePair<string, OptionalValue<int>>
+            var navIdDict = nav_id.Observations;
+
+            var dict = new Dictionary<int, double>();
+
+            foreach (var kv in navIdDict)
+            {
+                dict.Add(kv.Key, kv.Value);
+            }
+
+            return dict;
+        }
+
 
         public Frame<int, string> GetAOIHit(int participant_id)
         {

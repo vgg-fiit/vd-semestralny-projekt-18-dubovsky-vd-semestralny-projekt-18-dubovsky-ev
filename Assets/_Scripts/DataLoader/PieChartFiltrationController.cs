@@ -142,11 +142,14 @@ public class PieChartFiltrationController : MonoBehaviour
         int age_category_cnt = pbe.Count;
         var age_categories = pbe.Keys.ToList();
         var participant_ages = participantDataset.GetParticipantAges();
+        var participant_navigations = participantDataset.GetParticipantNavigations();
 
         foreach (var par_age in participant_ages)
         {
             var participant_age = (int)par_age.Value;
             var participant_id = par_age.Key;
+            var participant_nav = (int)participant_navigations[participant_id];
+            bool participant_nav_bool = participant_nav != 0;
 
             // Debug.Log("Part age");
             // Debug.Log(participant_age);
@@ -154,6 +157,7 @@ public class PieChartFiltrationController : MonoBehaviour
             newExampleDataSet.Add(new BarGraphDataSet());
             newExampleDataSet.Last().ListOfBars = new List<XYBarValues>();
             newExampleDataSet.Last().GroupName = "Participant" + participant_id.ToString();
+
 
             foreach (var age_category in age_categories)
             {
@@ -163,7 +167,7 @@ public class PieChartFiltrationController : MonoBehaviour
                     {
                         XValue = age_category,
                         YValue = participant_age,
-                        navType = false,
+                        navType = participant_nav_bool,
                     };
                     newExampleDataSet.Last().ListOfBars.Add(xy);
                 }
