@@ -56,7 +56,7 @@ public class PieChartFiltrationController : MonoBehaviour
         {
             dict.Add("navigationType", 1);
         }
-        else if (StaticFiltrationController.licence.ToLower() == "rectangles")
+        else if (StaticFiltrationController.navType.ToLower() == "rectangles")
         {
             dict.Add("navigationType", 0);
         }
@@ -81,8 +81,6 @@ public class PieChartFiltrationController : MonoBehaviour
     public void PieChartFiltration()
 
     {
-        participantDataset.GetParticipantGaze(10);
-
         var filters = ConvertFiltrationValues();
         this.participantDataset.FilterParticipants(filters);
 
@@ -103,9 +101,18 @@ public class PieChartFiltrationController : MonoBehaviour
         go_sc.transform.name = "Scatterplot";
 
         StaticFiltrationController.newScatterPlotExampleDataSet = newExampleDataSet;
-        //sending new dataset to bargraph
-        go_sc.GetComponent<ScatterPlotDataLoadController>().Press(newExampleDataSet);
 
+        if (newExampleDataSet.Count > 0)
+        {
+            go_sc.GetComponent<ScatterPlotDataLoadController>().Press(newExampleDataSet);
+        }
+        else
+        {
+            // TODO hlaska
+            Debug.Log("Can not plot dataset with no data");
+        }
+
+        //sending new dataset to bargraph
 
         //BarGraph
         //data creation
@@ -125,7 +132,30 @@ public class PieChartFiltrationController : MonoBehaviour
 
         StaticFiltrationController.newBarGraphExampleDataSet = newExampleDataSet;
         //sending new dataset to bargraph
-        go.GetComponent<BarGraphDataLoadController>().Press(newExampleDataSet);
+        Debug.Log("Dataset 2 INFO::: Count: " + newExampleDataSet.Count
+                                              + "Capacity: " + newExampleDataSet.Capacity
+                                              + "Group name:  " + newExampleDataSet[0].GroupName
+                                              + "First bar count:  " + newExampleDataSet[0].ListOfBars.Count
+        );
+        foreach (var barData in newExampleDataSet[0].ListOfBars)
+        {
+            Debug.Log("Bar data: "
+                      + " " + barData.XValue
+                      + " " + barData.YValue
+                      + " " + barData.navType
+            );
+        }
+
+        if (newExampleDataSet.Count > 0)
+        {
+            go.GetComponent<BarGraphDataLoadController>().Press(newExampleDataSet);
+        }
+        else
+        {
+            // TODO hlaska
+            Debug.Log("Can not plot dataset with no data");
+        }
+
 
         this.participantDataset.ResetFilters();
     }
