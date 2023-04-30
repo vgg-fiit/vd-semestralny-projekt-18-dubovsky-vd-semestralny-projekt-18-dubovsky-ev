@@ -174,6 +174,7 @@ namespace BarGraph.VittorCloud
 
             GameObject bar = GameObject.Instantiate(barRef, transform.position, transform.rotation);
             GameObject sphere = GameObject.Instantiate(sphereRef, transform.position, transform.rotation);
+
             bar.transform.parent = ListOfGroups[zIndex].transform;
             sphere.transform.parent = ListOfGroups[zIndex].transform;
             //Vector3 pos = new Vector3(ListOfXPoint[xIndex].transform.position.x, 0, ListOfZPoints[zIndex].transform.position.z);
@@ -196,6 +197,11 @@ namespace BarGraph.VittorCloud
 
             Vector3 pos1 = new Vector3(ListOfXPoint[xIndex].transform.localPosition.x, yscale, 0);
             sphere.transform.localPosition = pos1;
+            if (StaticFiltrationController.newScatterPlotExampleDataSet[zIndex].ListOfBars[xIndex].navType)
+            {
+                sphere.GetComponent<Renderer>().material = StaticFiltrationController.sphereMaterial;
+
+            }
 
             ListOfGroups[zIndex].ListOfBar.Add(bar);
         }
