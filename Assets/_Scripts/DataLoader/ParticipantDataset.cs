@@ -228,9 +228,7 @@ namespace _Scripts.DataLoader
 
             var partGaze = Frame.ReadCsv(particPath);
             var rowCnt = partGaze.RowCount;
-
-            Debug.Log("GP starting");
-
+            
             var types = partGaze.GetColumn<int>("eyeMovementType");
             var xs = partGaze.GetColumn<int>("gazePointX");
             var ys = partGaze.GetColumn<int>("gazePointY");
@@ -238,20 +236,9 @@ namespace _Scripts.DataLoader
             var AOIHits = partGaze.GetColumn<int>("AOIHit");
             var fixationSize = partGaze.GetColumn<int>("fixationSize");
 
-            // x, y, 
 
             var GazeList = new List<GazeData>();
-
-            Debug.Log("GP columns loaded");
-
-            Debug.Log("GP lens: "
-                      + rowCnt + " "
-                      + types.ValueCount + " "
-                      + xs.ValueCount + " "
-                      + ys.ValueCount + " "
-                      + seconds.ValueCount + " "
-                      + AOIHits.ValueCount + " "
-                      + fixationSize.ValueCount + " ");
+            
 
             foreach (var i in Enumerable.Range(0, rowCnt))
             {
@@ -266,7 +253,6 @@ namespace _Scripts.DataLoader
                 };
                 GazeList.Add(gaze);
 
-                Debug.Log("GP " + i);
             }
 
             return GazeList;
