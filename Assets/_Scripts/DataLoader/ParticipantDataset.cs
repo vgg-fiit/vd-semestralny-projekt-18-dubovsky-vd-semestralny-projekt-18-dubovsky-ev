@@ -32,6 +32,8 @@ namespace _Scripts.DataLoader
         public float? AOIHit { get; set; }
 
         public int fixationSize { get; set; }
+
+        public int speed { get; set; }
     }
 
     public class ParticipantDataset
@@ -235,6 +237,7 @@ namespace _Scripts.DataLoader
             var seconds = partGaze.GetColumn<float>("timeElapsed");
             var AOIHits = partGaze.GetColumn<int>("AOIHit");
             var fixationSize = partGaze.GetColumn<int>("fixationSize");
+            var speed = partGaze.GetColumn<int>("speed");
 
 
             var GazeList = new List<GazeData>();
@@ -249,7 +252,8 @@ namespace _Scripts.DataLoader
                     y = ys.GetAt(i),
                     seconds = seconds.GetAt(i),
                     AOIHit = AOIHits.GetAt(i),
-                    fixationSize = fixationSize.GetAt(i)
+                    fixationSize = fixationSize.GetAt(i),
+                    speed = speed.GetAt(i),
                 };
                 GazeList.Add(gaze);
 
