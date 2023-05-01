@@ -256,7 +256,6 @@ namespace _Scripts.DataLoader
                     speed = speed.GetAt(i),
                 };
                 GazeList.Add(gaze);
-
             }
 
             return GazeList;

@@ -179,11 +179,17 @@ namespace BarGraph.VittorCloud
             sphere.transform.parent = ListOfGroups[zIndex].transform;
             //Vector3 pos = new Vector3(ListOfXPoint[xIndex].transform.position.x, 0, ListOfZPoints[zIndex].transform.position.z);
             // Debug.Log("Yes I am calling -----");
+            float yscale = (yValue - ymin) * scaleFactor;
+            bar.transform.localScale = new Vector3(bar.transform.localScale.x, yscale, bar.transform.localScale.z);
 
+
+            Vector3 pos1 = new Vector3(ListOfXPoint[xIndex].transform.localPosition.x, yscale, 0);
+            sphere.transform.localPosition = pos1;
+            bar.transform.localPosition = pos1;
 
             Vector3 pos = new Vector3(ListOfXPoint[xIndex].transform.localPosition.x, 0, 0);
-            bar.transform.localPosition = pos;
-            bar.transform.localScale = bar.transform.localScale * graphScaleFactor;
+            //bar.transform.localPosition = pos;
+            //bar.transform.localScale = bar.transform.localScale * graphScaleFactor;
 
             BarProperty barProperty = bar.GetComponent<BarProperty>();
 
@@ -191,12 +197,7 @@ namespace BarGraph.VittorCloud
             barProperty.SetBarColor(barColor);
             barProperty.SetBarLabel(yValue.ToString(), graphScaleFactor);
 
-            float yscale = (yValue - ymin) * scaleFactor;
-            bar.transform.localScale = new Vector3(bar.transform.localScale.x, yscale, bar.transform.localScale.z);
-
-
-            Vector3 pos1 = new Vector3(ListOfXPoint[xIndex].transform.localPosition.x, yscale, 0);
-            sphere.transform.localPosition = pos1;
+           
             if (StaticFiltrationController.newScatterPlotExampleDataSet[zIndex].ListOfBars[xIndex].navType)
             {
                 sphere.GetComponent<Renderer>().material = StaticFiltrationController.sphereMaterial;

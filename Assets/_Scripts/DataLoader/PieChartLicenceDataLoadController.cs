@@ -30,7 +30,7 @@ public class PieChartLicenceDataLoadController : MonoBehaviour
             else
             {
                 dataDescription.Add("True");
-                customColors.Add(Color.cyan);
+                customColors.Add(Color.magenta);
             }
         }
 

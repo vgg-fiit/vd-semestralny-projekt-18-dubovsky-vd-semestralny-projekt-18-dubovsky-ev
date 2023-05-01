@@ -11,10 +11,16 @@ public static class StaticFiltrationController
     public static string age = "all";
     public static string licence = "all";
 
+    public static bool cameraStatic = true;
+    public static bool cameraStaticSpatialCube = false;
+    public static GameObject cameraStaticSpatialCubeLastCube;
+
     public static Material sphereMaterial;
 
     public static List<BarGraphDataSet> newBarGraphExampleDataSet = new List<BarGraphDataSet>();
     public static List<BarGraphDataSet> newScatterPlotExampleDataSet = new List<BarGraphDataSet>();
+
+    public static Texture2D cursor;
 
     // toto musi byt vlastneho typu nejake struct alebo class - proste s informaciami o tom pozuivatelovi
     public static int? targetToShow;

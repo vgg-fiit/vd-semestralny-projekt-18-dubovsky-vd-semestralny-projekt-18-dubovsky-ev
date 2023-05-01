@@ -96,7 +96,7 @@ public class PieChartFiltrationController : MonoBehaviour
         }
 
         //instantiation of new bargraph
-        GameObject go_sc = Instantiate(_scatterPlot, new Vector3(-57.21429f, 0.2f, 14.26064f), Quaternion.identity);
+        GameObject go_sc = Instantiate(_scatterPlot, new Vector3(-63.21429f, 0.2f, 14.26064f), Quaternion.identity);
         go_sc.transform.parent = system.transform;
         go_sc.transform.name = "Scatterplot";
 

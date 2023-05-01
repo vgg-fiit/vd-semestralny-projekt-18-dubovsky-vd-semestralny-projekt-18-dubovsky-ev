@@ -23,12 +23,12 @@ public class PieChartNavTypeDataLoadController : MonoBehaviour
             Data.Add(keyValuePair.Value);
             if (keyValuePair.Key == 0)
             {
-                customColors.Add(Color.yellow);
+                customColors.Add(Color.cyan);
                 dataDescription.Add("Rectangles");
             }
             else
             {
-                customColors.Add(Color.green);
+                customColors.Add(Color.yellow);
                 dataDescription.Add("Arrows");
             }
         }

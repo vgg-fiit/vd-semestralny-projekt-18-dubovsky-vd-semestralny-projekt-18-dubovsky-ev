@@ -7,8 +7,10 @@ public class TornadoController : MonoBehaviour
 {
     // Start is called before the first frame update
     public GameObject sphere;
+    public GameObject sphereDiff;
     public GameObject sphereAOI;
     public GameObject sphereAOINone;
+    public GameObject sphereAOINoneDiff;
 
     public GameObject cube1;
     public GameObject cube2;
@@ -44,6 +46,18 @@ public class TornadoController : MonoBehaviour
 
     private Coroutine mainCoroutine;
 
+    private float targetId;
+
+    private double videoOffset;
+
+    private float timer = 0;
+
+    private bool gotTime = false;
+
+    private double distanceStart = 0;
+
+    private int offsetIndex = 0;
+
     void Start()
     {
 
@@ -59,9 +73,12 @@ public class TornadoController : MonoBehaviour
 
         rp = new RenderParams(material);
         participantData = participantDataset.GetParticipantGaze((int)StaticFiltrationController.targetToShow);
+        videoOffset = participantDataset.GetVideoOffset((int)StaticFiltrationController.targetToShow);
+
         i = 0;
         foreach (var item in participantData)
         {
+
             if (item.x != null && item.y != null && item.AOIHit != null)
             {
                 if (item.AOIHit == 1)
@@ -70,11 +87,25 @@ public class TornadoController : MonoBehaviour
                 }
                 else if (item.AOIHit == 0)
                 {
-                    _sphere = GameObject.Instantiate(sphere, new Vector3(0, 0, 0), transform.rotation);
+                    if (item.fixationSize != 100)
+                    {
+                        _sphere = GameObject.Instantiate(sphere, new Vector3(0, 0, 0), transform.rotation);
+                    }
+                    else
+                    {
+                        _sphere = GameObject.Instantiate(sphereDiff, new Vector3(0, 0, 0), transform.rotation);
+                    }
                 }
                 else if (item.AOIHit == -1)
                 {
-                    _sphere = GameObject.Instantiate(sphereAOINone, new Vector3(0, 0, 0), transform.rotation);
+                    if (item.fixationSize != 100)
+                    {
+                        _sphere = GameObject.Instantiate(sphereAOINone, new Vector3(0, 0, 0), transform.rotation);
+                    }
+                    else
+                    {
+                        _sphere = GameObject.Instantiate(sphereAOINoneDiff, new Vector3(0, 0, 0), transform.rotation);
+                    }
                 }
                 else if (item.AOIHit == 2)
                 {
@@ -82,27 +113,30 @@ public class TornadoController : MonoBehaviour
                 }
                 _sphere.transform.rotation = Quaternion.Euler(0, 0, 90);
                 _sphere.transform.parent = _cube.transform;
-                _sphere.transform.localPosition = new Vector3(_cube.transform.position.x - x_pos, ((float)item.y / 120) - 4.5f, ((float)item.x / 120) - 8);
+                _sphere.transform.localPosition = new Vector3(_cube.transform.position.x - x_pos,  (-1 ) * (((float)item.y / 120) - 4.5f), ((float)item.x / 120) - 8);
                 _sphere.transform.localScale = new Vector3((float)item.fixationSize / 30, _sphere.transform.localScale.y, (float)item.fixationSize / 30);
             }
-            
-            if (i == 0)
+
+            if (videoOffset <= x_pos && gotTime == false)
             {
                 firstCircle = _sphere.transform.localPosition.x;
+                distanceStart = x_pos;
+                offsetIndex = i;
+                gotTime = true;
             }
 
             if (i == participantData.Count - 1)
             {
                 lastCircle = _sphere.transform.localPosition.x;
             }
-
             x_pos = item.seconds;
             i++;
         }
 
-        wholeDistance = firstCircle - lastCircle;
+        _cube.transform.GetChild(0).transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().Pause();
 
-        Debug.Log(wholeDistance + "WHOLEDISTANCE");
+
+        wholeDistance = firstCircle - lastCircle;
 
         mainCoroutine = StartCoroutine(MoveCube(_cube.transform.GetChild(0).gameObject, participantData.Count, participantData, 0));
     }
@@ -118,16 +152,44 @@ public class TornadoController : MonoBehaviour
         float last = 0;
         float sec = 0;
         cube.transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().Play();
+        //Debug.Log(_cube.transform.position.x - (float)distanceStart - (float)((wholeDistance / 100) * (percent * 100)) + "POSITION");
         Debug.Log((percent) + "PERCENT");
+        //Debug.Log((float)distanceStart + "VZDIALENOST ?");
         Debug.Log((float)((wholeDistance / 100) * (percent * 100)) + "PRETOCENIE");
-        cube.transform.localPosition = new Vector3(20 + _cube.transform.position.x - (float)((wholeDistance / 100) * (percent * 100)), cube.transform.localPosition.y, cube.transform.localPosition.z);
+        cube.transform.localPosition = new Vector3(_cube.transform.position.x - (float)distanceStart - (float)((wholeDistance / 100) * (percent * 100)), cube.transform.localPosition.y, cube.transform.localPosition.z);
         //Camera.main.transform.position = new Vector3(_cube.transform.localPosition.x - 20, _cube.transform.localPosition.y + 5, _cube.transform.localPosition.z);
-        foreach (var item in data)
+        /*foreach (var item in data)
         {
             sec = item.seconds - last;
             //Debug.Log(sec);
             cube.transform.position = new Vector3(cube.transform.position.x - sec, cube.transform.position.y, cube.transform.position.z);
             last = item.seconds;
+            yield return new WaitForSeconds(sec);
+        }*/
+        //Debug.Log((percent) + "PERCENT");
+        //Debug.Log((float)((wholeDistance / 100) * (percent * 100)) + "PRETOCENIE");
+        //Debug.Log("INDEX" + ((int)(((data.Count - offsetIndex) * percent)) + offsetIndex));
+        //Debug.Log("OFFSETINDEX" + offsetIndex);
+        //Debug.Log("FULL" + data.Count);
+        Debug.Log(percent + " PERCENT " + ((int)(((data.Count - offsetIndex) * percent)) + offsetIndex) + " FROM " + data.Count);
+
+        for (int t = ((int)(((data.Count - offsetIndex) * percent)) + offsetIndex); t<data.Count; t++)
+        {
+
+            while (cube.transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().isPaused)
+            {
+                    yield return null;
+            }
+            if (t != 0)
+            {
+                last = data[t - 1].seconds;
+            }
+
+            //Debug.Log(((int)(((data.Count - offsetIndex) * percent)) + offsetIndex) + "INDEX " + t + " FROM  " + data.Count);
+            sec = data[t].seconds - last;
+            //Debug.Log(sec);
+            cube.transform.position = new Vector3(cube.transform.position.x - sec, cube.transform.position.y, cube.transform.position.z);
+            last = data[t].seconds;
             yield return new WaitForSeconds(sec);
         }
     }

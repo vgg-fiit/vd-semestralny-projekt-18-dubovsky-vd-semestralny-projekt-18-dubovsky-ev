@@ -23,20 +23,50 @@ public class CameraController : MonoBehaviour
 
     void OnEnable()
     {
-        if (focusOnEnable) Focused = true;
+        if (StaticFiltrationController.cameraStatic == false)
+        {
+            if (focusOnEnable) Focused = true;
+
+        }
     }
 
-    void OnDisable() => Focused = false;
+    void OnDisable(){
+
+        if (StaticFiltrationController.cameraStatic == false)
+        {
+            Focused = false;
+        }
+    }
 
     void Update()
     {
-        // Input
-        //if (Focused)
-        UpdateInput();
+        if (StaticFiltrationController.cameraStatic == false)
+        {
+            // Input
+            //if (Focused)
+            UpdateInput();
 
-        // Physics
-        velocity = Vector3.Lerp(velocity, Vector3.zero, dampingCoefficient * Time.deltaTime);
-        transform.position += velocity * Time.deltaTime;
+            // Physics
+            velocity = Vector3.Lerp(velocity, Vector3.zero, dampingCoefficient * Time.deltaTime);
+            transform.position += velocity * Time.deltaTime;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            if (StaticFiltrationController.cameraStaticSpatialCube == false)
+            {
+                Camera.main.transform.localPosition = new Vector3(-37.43f, 5.9f, -41.96f);
+                Camera.main.transform.rotation = Quaternion.Euler(13.787f, -3.243f, -0.774f);
+            }
+            else
+            {
+                Camera.main.transform.localPosition = new Vector3(StaticFiltrationController.cameraStaticSpatialCubeLastCube.transform.GetChild(0).transform.GetChild(0).transform.position.x + 19, 6.55f, StaticFiltrationController.cameraStaticSpatialCubeLastCube.transform.GetChild(0).transform.GetChild(0).transform.position.z - 4);
+                Camera.main.transform.rotation = Quaternion.Euler(13.787f, 223.554f, -0.774f);
+            }
+            
+        }
+        
     }
 
     void UpdateInput()
