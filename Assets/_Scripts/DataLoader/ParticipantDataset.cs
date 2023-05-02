@@ -205,6 +205,24 @@ namespace _Scripts.DataLoader
 
             return dict;
         }
+        
+        public Dictionary<int, double> GetParticipantAVGSpeeds()
+        {
+            var speed_id = this.MetaDF["speedAvg"];
+            // KeyValuePair<string, OptionalValue<int>>
+            var speedIdDict = speed_id.Observations;
+
+            var dict = new Dictionary<int, double>();
+
+            foreach (var kv in speedIdDict)
+            {
+                dict.Add(kv.Key, kv.Value);
+            }
+
+            return dict;
+        }
+        
+        
 
 
         public Frame<int, string> GetAOIHit(int participant_id)
