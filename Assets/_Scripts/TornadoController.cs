@@ -18,7 +18,7 @@ public class TornadoController : MonoBehaviour
     public GameObject cube3;
 
 
-    private float x_pos = 17.0f;
+    private float x_pos = 0;
     private float before_x = 0;
     private float before_y = 0;
 
@@ -61,6 +61,10 @@ public class TornadoController : MonoBehaviour
 
     private GameObject uiAvgSpeed;
 
+    private bool firstRightHit = false;
+
+    private int indexFirstRightHit = 0;
+
     void Start()
     {
         Debug.Log(transform.GetChild(0).transform.GetChild(2).name);
@@ -91,6 +95,7 @@ public class TornadoController : MonoBehaviour
                 }
                 else if (item.AOIHit == 0)
                 {
+
                     if (item.fixationSize != 100)
                     {
                         _sphere = GameObject.Instantiate(sphere, new Vector3(0, 0, 0), transform.rotation);
@@ -99,6 +104,12 @@ public class TornadoController : MonoBehaviour
                     {
                         _sphere = GameObject.Instantiate(sphereDiff, new Vector3(0, 0, 0), transform.rotation);
                     }
+
+                    if (firstRightHit == false)
+                    {
+                        indexFirstRightHit = i;
+                        firstRightHit = true;
+                    } 
                 }
                 else if (item.AOIHit == -1)
                 {
@@ -123,6 +134,7 @@ public class TornadoController : MonoBehaviour
 
             if (videoOffset <= x_pos && gotTime == false)
             {
+                Debug.Log("INDEX" + x_pos);
                 firstCircle = _sphere.transform.localPosition.x;
                 distanceStart = x_pos;
                 offsetIndex = i;
@@ -179,6 +191,7 @@ public class TornadoController : MonoBehaviour
 
         for (int t = ((int)(((data.Count - offsetIndex) * percent)) + offsetIndex); t<data.Count; t++)
         {
+            Debug.Log(t + "AHA " + percent + " PERCENT " + ((int)(((data.Count - offsetIndex) * percent)) + offsetIndex) + " FROM " + data.Count);
 
             while (cube.transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().isPaused)
             {
@@ -196,10 +209,15 @@ public class TornadoController : MonoBehaviour
             cube.transform.position = new Vector3(cube.transform.position.x - sec, cube.transform.position.y, cube.transform.position.z);
             last = data[t].seconds;
 
-            if (t != 0)
+            /*if (t != 0 && t > 1)
             {
-                uiAvgSpeed.GetComponent<TextMeshProUGUI>().text = data[t - 1].speed.ToString() + " km/h";
+                uiAvgSpeed.GetComponent<TextMeshProUGUI>().text = data[t].speed.ToString() + " km/h";
             }
+            else
+            {
+                uiAvgSpeed.GetComponent<TextMeshProUGUI>().text = "";
+
+            }*/
 
 
             yield return new WaitForSeconds(sec);
