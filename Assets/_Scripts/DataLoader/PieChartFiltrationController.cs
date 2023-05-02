@@ -173,6 +173,7 @@ public class PieChartFiltrationController : MonoBehaviour
         var age_categories = pbe.Keys.ToList();
         var participant_ages = participantDataset.GetParticipantAges();
         var participant_navigations = participantDataset.GetParticipantNavigations();
+        var participant_speedavg = participantDataset.GetParticipantAVGSpeeds();
 
         foreach (var par_age in participant_ages)
         {
@@ -180,6 +181,7 @@ public class PieChartFiltrationController : MonoBehaviour
             var participant_id = par_age.Key;
             var participant_nav = (int)participant_navigations[participant_id];
             bool participant_nav_bool = participant_nav != 0;
+            var avgSpeed = (int)participant_speedavg[participant_id];
 
             // Debug.Log("Part age");
             // Debug.Log(participant_age);
@@ -196,7 +198,7 @@ public class PieChartFiltrationController : MonoBehaviour
                     var xy = new XYBarValues
                     {
                         XValue = age_category,
-                        YValue = participant_age,
+                        YValue = avgSpeed,
                         navType = participant_nav_bool,
                     };
                     newExampleDataSet.Last().ListOfBars.Add(xy);
