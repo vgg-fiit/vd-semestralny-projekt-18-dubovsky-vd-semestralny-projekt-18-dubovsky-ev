@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using _Scripts.DataLoader;
+using TMPro;
 
 public class TornadoController : MonoBehaviour
 {
@@ -58,9 +59,12 @@ public class TornadoController : MonoBehaviour
 
     private int offsetIndex = 0;
 
+    private GameObject uiAvgSpeed;
+
     void Start()
     {
-
+        Debug.Log(transform.GetChild(0).transform.GetChild(2).name);
+        uiAvgSpeed = transform.GetChild(0).transform.GetChild(2).transform.GetChild(0).gameObject;
     }
 
 
@@ -185,11 +189,19 @@ public class TornadoController : MonoBehaviour
                 last = data[t - 1].seconds;
             }
 
+
             //Debug.Log(((int)(((data.Count - offsetIndex) * percent)) + offsetIndex) + "INDEX " + t + " FROM  " + data.Count);
             sec = data[t].seconds - last;
             //Debug.Log(sec);
             cube.transform.position = new Vector3(cube.transform.position.x - sec, cube.transform.position.y, cube.transform.position.z);
             last = data[t].seconds;
+
+            if (t != 0)
+            {
+                uiAvgSpeed.GetComponent<TextMeshProUGUI>().text = data[t - 1].speed.ToString() + " km/h";
+            }
+
+
             yield return new WaitForSeconds(sec);
         }
     }
