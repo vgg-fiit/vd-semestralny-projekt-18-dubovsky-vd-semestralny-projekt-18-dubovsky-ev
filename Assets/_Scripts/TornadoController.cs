@@ -187,11 +187,11 @@ public class TornadoController : MonoBehaviour
         //Debug.Log("INDEX" + ((int)(((data.Count - offsetIndex) * percent)) + offsetIndex));
         //Debug.Log("OFFSETINDEX" + offsetIndex);
         //Debug.Log("FULL" + data.Count);
-        Debug.Log(percent + " PERCENT " + ((int)(((data.Count - offsetIndex) * percent)) + offsetIndex) + " FROM " + data.Count);
+        //Debug.Log(percent + " PERCENT " + ((int)(((data.Count - offsetIndex) * percent)) + offsetIndex) + " FROM " + data.Count);
 
         for (int t = ((int)(((data.Count - offsetIndex) * percent)) + offsetIndex); t<data.Count; t++)
         {
-            Debug.Log(t + "AHA " + percent + " PERCENT " + ((int)(((data.Count - offsetIndex) * percent)) + offsetIndex) + " FROM " + data.Count);
+            //Debug.Log(t + "AHA " + percent + " PERCENT " + ((int)(((data.Count - offsetIndex) * percent)) + offsetIndex) + " FROM " + data.Count);
 
             while (cube.transform.GetChild(0).transform.GetChild(0).GetComponent<UnityEngine.Video.VideoPlayer>().isPaused)
             {
