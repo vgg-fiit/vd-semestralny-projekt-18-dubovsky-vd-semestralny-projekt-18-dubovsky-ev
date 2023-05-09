@@ -19,6 +19,8 @@ Na túto tému sme sa rozhodli použiť metaforu "tornád" s pomocou spatial tem
 
 Všetky základné dáta sú vysvetlené v Help, ktorý sa dá zobraziť tlačidlom Help vpravo hore.
 
+![](Pictures/Help.png)
+
 Na začiatku má užívateľ statickú kameru pre ľahšie užívateľské rozhranie.
 Pokiaľ si chce kameru zmeniť na dynamickú stačí stlačiť tlačidlo "T" a pohybovať sa s kamerou WASD, Shift a pri potrebe klikania vypnúť zapnúť myšku s tlačidlom ESC. Dynamickú kameru môže využiť, keď potrebuje iný pohľad na vizualizácie ako jeho statický pohľad.
 Pri statickej kamere a dynamickej kamere sa môže užívateľ pohybovať tlačidlami vľavo hore - LastCube, Graph, ktoré ho presmerujú na poslednú spatial cube a základné grafy.
@@ -45,3 +47,4 @@ Na spustenie projektu, je potrebné si projekt naklonovať a otvoriť v Unity 20
 
 Taktiež je potrebné vytvoriť priečinok v Assets s názvom "Videos" a pridať tam videá jednotlivých participantov s názvom "ParticipantX-converted.mp4", kde "X" je číslo participanta. Napríklad "Participant5-converted.mp4" alebo "Participant24-converted.mp4".
 
+![](Pictures/videos.png)
