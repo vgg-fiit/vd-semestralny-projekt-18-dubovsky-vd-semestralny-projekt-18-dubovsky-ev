@@ -8,11 +8,11 @@ Téma projektu bola vizualizácia eyetracking dát vo videu.
 Na túto tému sme sa rozhodli použiť metaforu "tornád" s pomocou spatial temporal cube, ktoré reprezentujú kam sa užívateľ pozerá. Tornáda menia svoju veľkosť na základe toho, ako dlho sa užívateľ pozerá na dané miesto. Eyetrackingové dáta boli vytvorené pre experiment, ako zmena typu navigácie ovplyvní pozeranie sa šoféra vo vozidle.
 
 ![](Pictures/piechart.png)
-![](gifspics/bargraph.png)
-![](gifspics/scatterplot.png)
+![](Pictures/bargraph.png)
+![](Pictures/scatterplot.png)
 ![](Pictures/SpatialCube.png)
-![](gifspics/SpatialCubeBasic.png)
-![](gifspics/videos.png)
+![](Pictures/SpatialCubeBasic.png)
+![](Pictures/videos.png)
 
 
 # Popis
